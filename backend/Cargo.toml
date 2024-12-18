@@ -1,0 +1,10 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rocket = { version = "0.5.1", features = ["json"] }
+serde = { version = "1.0", features = ["derive"] }
+chrono = "0.4.39"
+rocket_cors = { version = "0.6.0", default-features = false }
