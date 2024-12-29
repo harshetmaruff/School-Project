@@ -1,34 +1,44 @@
-use rocket::serde::{Deserialize, Serialize, json::Json};
-use rocket::{get, launch, routes};
-use rocket_cors::{AllowedOrigins, CorsOptions};
+use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_cors::Cors;
+use serde::{Serialize, Deserialize};
+use serde_json;
 
-#[derive(Deserialize, Serialize, Clone)]
+//Data Models
+#[derive(Serialize, Deserialize)]
 struct Data {
     msg: String
 }
 
-
+// Route Function
 #[get("/")]
-async fn index() -> String {
-    let s = String::from("Ginger");
-    s
-} 
+async fn hello() -> impl Responder {
+    HttpResponse::Ok().body("Hello World")
+}
 
 #[get("/lost")]
-async fn saytext() -> Json<Data> {
-    Json(Data {
-        msg: String::from("Hello Rust")
+async fn saytext() -> impl Responder {
+    HttpResponse::Ok().json(Data {
+        msg: "Hello Actix".to_string()
     })
 }
 
-#[launch]
-fn rocket() -> _ {
-    let cors = CorsOptions::default()
-        .allowed_origins(AllowedOrigins::all())
-        .to_cors()
-        .expect("Error while building CORS");    
 
-    rocket::build()
-        .mount("/", routes![index, saytext])
-        .attach(cors)
+// Initialization
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    HttpServer::new(|| {
+        let cors = Cors::default()
+            .allow_any_origin() //Development sake we allowed every app to request data
+            // .allowed_origin(origin) // <- During Production Process
+            .allow_any_method()
+            .allow_any_header()
+            .max_age(3600);
+        App::new()
+            .wrap(cors)
+            .service(hello)
+            .service(saytext)
+    })
+    .bind(("127.0.0.1", 8000))?
+    .run()
+    .await
 }
