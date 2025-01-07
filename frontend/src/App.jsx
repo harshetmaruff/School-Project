@@ -26,7 +26,20 @@ function App() {
 
   return (
     <>
-      {Message}
+      <div className='LoginDiv'>
+        <div className='LoginElement'>
+          <div style={{textAlign: 'center'}}>
+              Login
+          </div>
+          <form>
+            <input type="text" placeholder='Enter username' style={{marginTop: '1rem'}}/>
+            <br />
+            <input type="text" placeholder='Enter password' style={{marginTop: '1rem'}}/>
+            <br />
+            <button type='submit'>Sign In</button>
+          </form>
+        </div>
+      </div>
     </>
   )
 }
