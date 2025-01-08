@@ -1,3 +1,12 @@
+// Database
+#[macro_use]
+extern crate diesel;
+
+mod schema;
+mod db;
+mod models;
+mod ops;
+
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use actix_cors::Cors;
 use serde::{Serialize, Deserialize};
