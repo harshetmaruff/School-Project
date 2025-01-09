@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { api } from './api';
 
 function SignUp() {
-    
+
   useEffect(() => {
     fetchString()
   }, []);
 
   const fetchString = async () => {
-    const response = await fetch("http://127.0.0.1:8000/lost", {
+    const response = await fetch(api + "/lost", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
