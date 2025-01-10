@@ -13,3 +13,6 @@ serde_json = "1.0.134"
 #----Database Framework----
 diesel = {version = "2.2.6", features = ["postgres"]}
 dotenvy = "0.15"
+
+#----Debug----
+env_logger = "0.11.6"
