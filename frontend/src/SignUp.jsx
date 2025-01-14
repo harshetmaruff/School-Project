@@ -4,11 +4,6 @@ import { api } from './api';
 
 function SignUp() {
 
-  useEffect(() => {
-    // fetchData()
-  }, []);
-
-  
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -25,23 +20,20 @@ function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData)
-    fetchData()
+    console.log(JSON.stringify(formData))
+    fetch(api + "/user", postOptions)
+      .then(response => response.json())
+      .then(() => {console.log("addded")})
   }
 
-  const fetchData = async () => {
-    const response = await fetch(api + "/user", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      mode: 'cors',
-      body: JSON.stringify(FormData)
-    });
-
-    console.log(response)
-
-  }
+  const postOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    mode: 'cors',
+    body: JSON.stringify(formData)
+  };
 
   return (
     <>

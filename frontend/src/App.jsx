@@ -11,18 +11,20 @@ function App() {
   }, []);
 
   const fetchString = async () => {
-    const response = await fetch(api + "/lost", {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      mode: 'cors',
-    });
+    const response = await fetch(api + "/lost", requestOptions);
     if (response.ok) {
       const data = await response.json();
        setMessage(data.msg)
        console.log(data)
     }
+  }
+
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    mode: 'cors'
   }
 
   return (
