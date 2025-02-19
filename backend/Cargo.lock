@@ -587,12 +587,17 @@ version = "2.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ccf1bedf64cdb9643204a36dd15b19a6ce8e7aa7f7b105868e9f1fad5ffa7d12"
 dependencies = [
+ "bigdecimal",
  "bitflags",
  "byteorder",
  "chrono",
  "diesel_derives",
  "itoa",
+ "num-bigint",
+ "num-integer",
+ "num-traits",
  "pq-sys",
+ "serde_json",
 ]
 
 [[package]]

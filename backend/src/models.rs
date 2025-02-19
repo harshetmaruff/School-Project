@@ -1,7 +1,8 @@
 use chrono::{NaiveDateTime, NaiveDate};
+use sqlx::postgres::PgPool;
 use bigdecimal;
 use diesel::pg::Pg;
-use diesel::sql_types::Numeric;
+// use diesel::sql_types::Numeric;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
@@ -10,6 +11,7 @@ use crate::schema::users;
 // Accounts Table
 use crate::schema::transaction_type;
 use crate::schema::journal;
+use crate::schema::ledger;
 
 //Data Models
 #[derive(Debug, Serialize, Deserialize)]
@@ -65,7 +67,7 @@ pub struct Journal {
     pub ledger_id: i32,
     pub transaction_type_id: i32,
     pub transaction_reference: Option<String>,
-    pub transaction_date: NaiveDate,
+    pub transaction_date: Option<NaiveDateTime>,
     pub description: Option<String>,
 
     #[diesel(sql_type = Numeric)]
@@ -84,15 +86,57 @@ pub struct JournalData {
     pub voucher_no: String,
     pub ledger_id: i32,
     pub transaction_type_id: i32,
-    pub transaction_date: String,
+    pub transaction_date: NaiveDateTime,
     pub description: String,
-    pub debit: f32,
-    pub credit: f32,
+    
+    #[diesel(sql_type = Numeric)]
+    pub debit: Option<bigdecimal::BigDecimal>,
+    #[diesel(sql_type = Numeric)]
+    pub credit: Option<bigdecimal::BigDecimal>,
+
     pub currency_code: String,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime 
+    pub created_at: Option<NaiveDateTime>,
+    pub updated_at: Option<NaiveDateTime> 
 }
 
+#[derive(Insertable, Deserialize, Serialize)]
+#[diesel(table_name = ledger)]
+pub struct LedgerData {
+    pub coa_id: i32,
+    pub name: String,
+    pub code: String,
+    pub parent_id: i32,
+    pub currency_code: String,
+    pub financial_year: String,
+
+    #[diesel(sql_type = Numeric)]
+    pub opening_balance: Option<bigdecimal::BigDecimal>,
+    #[diesel(sql_type = Numeric)]
+    pub closing_balance: Option<bigdecimal::BigDecimal>,
+
+    pub created_at: Option<NaiveDateTime>,
+    pub updated_at: Option<NaiveDateTime>
+}
+
+#[derive(Queryable, Deserialize, Serialize, Selectable)]
+#[diesel(table_name = ledger)]
+pub struct Ledger {
+    pub id: i32,
+    pub coa_id: i32,
+    pub name: String,
+    pub code: String,
+    pub parent_id: Option<i32>,
+    pub currency_code: Option<String>,
+    pub financial_year: String,
+
+    #[diesel(sql_type = Numeric)]
+    pub opening_balance: Option<bigdecimal::BigDecimal>,
+    #[diesel(sql_type = Numeric)]
+    pub closing_balance: Option<bigdecimal::BigDecimal>,
+
+    pub created_at: Option<NaiveDateTime>,
+    pub updated_at: Option<NaiveDateTime> 
+}
 
 #[derive(Queryable, Serialize, Deserialize, Selectable)]
 #[diesel(table_name = transaction_type)]
@@ -100,7 +144,11 @@ pub struct JournalData {
 pub struct TransactionTypeData {
     pub id: i32,
     pub name: String,
-    pub description: Option<String>
+
+    #[diesel(sql_type = TEXT)]
+    pub description: Option<String>,
+    pub created_at: Option<NaiveDateTime>,
+    pub updated_at: Option<NaiveDateTime> 
 }
 
 //--------------------------------------------------
