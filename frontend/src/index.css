@@ -1,12 +1,7 @@
-#root {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+@import "tailwindcss";
 
-
-* {
-  background-color: #1E201E;
-  color: #ECDFCC;
+@theme {
+  --color-darkviolette: #1f1740;
+  --color-lightviolette: #A377FF;
+  --color-bwhite: #F7F7F7;
 }

@@ -1,49 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
-import { api } from './api';
+import Sidebar from './components/Sidebar'
+import MenuOption from './components/MenuOption'
 
 function App() {
 
-  const [Message, setMessage] = useState(".....Loading....")
-
-  useEffect(() => {
-    fetchString()
-  }, []);
-
-  const fetchString = async () => {
-    const response = await fetch(api + "/lost", requestOptions);
-    if (response.ok) {
-      const data = await response.json();
-       setMessage(data.msg)
-       console.log(data)
-    }
-  }
-
-  const requestOptions = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    mode: 'cors'
-  }
-
   return (
-    <>
-      <div className='LoginDiv'>
-        <div className='LoginElement'>
-          <div style={{textAlign: 'center'}}>
-              Login
-          </div>
-          <form>
-            <input type="text" placeholder='Enter username' style={{marginTop: '1rem'}}/>
-            <br />
-            <input type="text" placeholder='Enter password' style={{marginTop: '1rem'}}/>
-            <br />
-            <button type='submit'>Sign In</button>
-          </form>
-        </div>
-      </div>
-    </>
+    <div className='flex'>
+      <Sidebar selected="Analytics"/>
+      <MenuOption/>
+    </div>
   )
 }
 
