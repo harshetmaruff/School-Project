@@ -8,21 +8,28 @@ import Inventory from '../assets/SidebarIcons/Inventory.svg'
 import Sales from '../assets/SidebarIcons/Sales.svg'
 import Purchase from '../assets/SidebarIcons/Purchase.svg'
 import Settings from '../assets/SidebarIcons/Settings.svg'
+import MenuOption from './MenuOption'
 
-const Sidebar = ({selected}) => {
+const Sidebar = ({selected, option}) => {
 
   return (
-    <div className=' h-screen bg-darkviolette w-18 pt-4 pb-4 pl-2'>
+    <>
+    <div className=' h-screen bg-darkviolette w-18 pt-4 pb-4 pl-2 flex flex-col'>
+      <div>
         <div className={`mt-8 mb-4 p-2 rounded-l-lg ${ (selected == "Analytics") ? "bg-lightviolette" : "" }`}><img src={AnalyticsLogo} className='w-16' alt="" /></div>
-        <div className={`mt-4 mb-4  p-2 rounded-l-lg ${ (selected == "POS") ? "bg-lightviolette" : "" }`}><img src={CurrencyRupee} className='w-16' alt="" /></div>
+        <div className={`mt-4 mb-4  p-2 rounded-l-lg ${ (selected == "Finance") ? "bg-lightviolette" : "" }`}><img src={CurrencyRupee} className='w-16' alt="" /></div>
         <div className={`mt-4 mb-4  p-2 rounded-l-lg ${ (selected == "eCommerce") ? "bg-lightviolette" : "" }`}><img src={ShoppingCart} className='w-16' alt="" /></div>
         <div className={`mt-4 mb-4  p-2 rounded-l-lg ${ (selected == "PointOfSale") ? "bg-lightviolette" : "" }`}><img src={PointOfSale} className='w-16' alt="" /></div>
         <div className={`mt-4 mb-4  p-2 rounded-l-lg ${ (selected == "Teams") ? "bg-lightviolette" : "" }`}><img src={Team} alt="" className='w-16'/></div>
         <div className={`mt-4 mb-4  p-2 rounded-l-lg ${ (selected == "Inventory") ? "bg-lightviolette" : "" }`}><img src={Inventory} className='w-16' alt="" /></div>
         <div className={`mt-4 mb-4  p-2 rounded-l-lg ${ (selected == "Sales") ? "bg-lightviolette" : "" }`}><img src={Sales} className='w-16' alt="" /></div>
         <div className={`mt-4 mb-4  p-2 rounded-l-lg ${ (selected == "Purchase") ? "bg-lightviolette" : "" }`}><img src={Purchase} className='w-16' alt="" /></div>
-        <div className={`mt-12 p-2 rounded-l-lg ${ (selected == "Settings") ? "bg-lightviolette" : "" }`}><img src={Settings} className='w-16' alt="" /></div>
+      </div>
+
+        <div className={`mt-auto p-2 rounded-l-lg ${ (selected == "Settings") ? "bg-lightviolette" : "" }`}><img src={Settings} className='w-16' alt="" /></div>
     </div>
+    <MenuOption title={selected} Options={option}/>
+    </>
   )
 }
 export default Sidebar
