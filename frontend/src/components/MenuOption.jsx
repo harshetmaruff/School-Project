@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router'
 
 const MenuOption = ({Options, title}) => {
 
@@ -12,7 +13,7 @@ const MenuOption = ({Options, title}) => {
 
           return(
           <div className={`text-base m-4 ml-1 rounded-l-lg mr-0 p-1 ${ (num.selected) ? "text-lightviolette bg-white" : "text-white" }`} id={num.id}>
-            <a  className='flex' href=""><img src={num.logo}  alt="" className='mr-1 fill-lightviolette'/> {num.name}</a>
+            <NavLink  className='flex' to={num.link}><img src={num.logo}  alt="" className='mr-1 fill-lightviolette'/> {num.name}</NavLink>
           </div>
           )
         })}

@@ -1,0 +1,76 @@
+import React from 'react'
+import Sidebar from '../../components/Sidebar'
+import PaymentsTable from '../../components/Finance/PaymentsTable'
+import Receipts from '../../assets/MenuBarOptions/receipt.svg'
+
+
+const Payments = () => {
+
+    const Link = [
+        {
+          id: 1,
+          name: "Journal",
+          logo: Receipts,
+          link: "/finance/journal",
+          selected: false
+        },
+        {
+          id: 2,
+          name: "Receipt",
+          logo: Receipts,
+          link: "/finance/receipt",
+          selected: false
+        },
+        {
+          id: 3,
+          name: "Payments",
+          logo: Receipts,
+          link: "/finance/payments",
+          selected: true
+        },
+        {
+          id: 4,
+          name: "Credit Note",
+          logo: Receipts,
+          link: "/finance/credit_note",
+          selected: false
+        },
+        {
+          id: 5,
+          name: "Debit Note",
+          logo: Receipts,
+          link: "/finance/debit_note",
+          selected: false
+        },
+        {
+          id: 6,
+          name: "Ledger",
+          logo: Receipts,
+          link: "/finance/ledger",
+          selected: false
+        },
+        {
+          id: 7,
+          name: "Bank",
+          logo: Receipts,
+          link: "/finance/bank",
+          selected: false
+        },
+        {
+          id: 8,
+          name: "Exchange Rate",
+          logo: Receipts,
+          link: "/finance/exchange_rate",
+          selected: false
+        },
+    ]
+
+    return (
+      <div className='flex w-screen'>
+        <Sidebar selected='Finance' option={Link}/>
+        <PaymentsTable />
+      </div>
+    )
+}
+
+export default Payments

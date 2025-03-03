@@ -1,7 +1,7 @@
 import React from 'react'
-import Sidebar from '../components/Sidebar'
-import JournalTable from '../components/Journal/JournalTable'
-import Receipt from '../assets/MenuBarOptions/receipt.svg'
+import Sidebar from '../../components/Sidebar'
+import JournalTable from '../../components/Finance/JournalTable'
+import Receipt from '../../assets/MenuBarOptions/receipt.svg'
 
 const Journal = () => {
 
@@ -10,56 +10,56 @@ const Journal = () => {
           id: 1,
           name: "Journal",
           logo: Receipt,
-          link: "",
+          link: "/finance/journal",
           selected: true
         },
         {
           id: 2,
           name: "Receipt",
           logo: Receipt,
-          link: "",
+          link: "/finance/receipt",
           selected: false
         },
         {
           id: 3,
           name: "Payments",
           logo: Receipt,
-          link: "",
+          link: "/finance/payments",
           selected: false
         },
         {
           id: 4,
           name: "Credit Note",
           logo: Receipt,
-          link: "",
+          link: "/finance/credit_note",
           selected: false
         },
         {
           id: 5,
           name: "Debit Note",
           logo: Receipt,
-          link: "",
+          link: "/finance/debit_note",
           selected: false
         },
         {
           id: 6,
           name: "Ledger",
           logo: Receipt,
-          link: "",
+          link: "/finance/ledger",
           selected: false
         },
         {
           id: 7,
           name: "Bank",
           logo: Receipt,
-          link: "",
+          link: "/finance/bank",
           selected: false
         },
         {
           id: 8,
           name: "Exchange Rate",
           logo: Receipt,
-          link: "",
+          link: "/finance/exchange_rate",
           selected: false
         },
     ]
