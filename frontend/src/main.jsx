@@ -17,6 +17,7 @@ import Products from './Pages/Inventory/Products.jsx';
 import Invoice from './Pages/Sales/Invoice.jsx';
 import PurchaseOrder from './Pages/Purchase/PurchaseOrder.jsx';
 import Vendor from './Pages/Teams/Vendor.jsx';
+import CreateJournal from './Pages/Finance/Create/CreateJournal.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -31,6 +32,9 @@ createRoot(document.getElementById('root')).render(
           <Route path='/finance/ledger' element={<Ledger />} />
           <Route path='/finance/bank' element={<Bank />} />
           <Route path='/finance/exchange_rate' element={<ExchangeRate />} />
+
+          {/* Finance Create Routes */}
+          <Route path='/finance/journal/create' element={<CreateJournal />} />
 
           {/* eCommerce Routes */}
           <Route path='/ecommerce/' element={<Navigate to='/ecommerce/orders'/>} />
