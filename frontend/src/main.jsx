@@ -18,6 +18,12 @@ import Invoice from './Pages/Sales/Invoice.jsx';
 import PurchaseOrder from './Pages/Purchase/PurchaseOrder.jsx';
 import Vendor from './Pages/Teams/Vendor.jsx';
 import CreateJournal from './Pages/Finance/Create/CreateJournal.jsx';
+import CreateReceipt from './Pages/Finance/Create/CreateReceipt.jsx';
+import CreatePayments from './Pages/Finance/Create/CreatePayments.jsx';
+import CreateCreditNote from './Pages/Finance/Create/CreateCreditNote.jsx';
+import CreateDebitNote from './Pages/Finance/Create/CreateDebitNote.jsx';
+import CreateBank from './Pages/Finance/Create/CreateBank.jsx';
+import CreateExchangeRate from './Pages/Finance/Create/CreateExchangeRate.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -35,6 +41,12 @@ createRoot(document.getElementById('root')).render(
 
           {/* Finance Create Routes */}
           <Route path='/finance/journal/create' element={<CreateJournal />} />
+          <Route path='/finance/receipt/create' element={<CreateReceipt />} />
+          <Route path='/finance/payments/create' element={<CreatePayments />} />
+          <Route path='/finance/credit_note/create' element={<CreateCreditNote />} />
+          <Route path='/finance/debit_note/create' element={<CreateDebitNote />} />
+          <Route path='/finance/bank/create' element={<CreateBank />}/>
+          <Route path='/finance/exchange_rate/create' element={<CreateExchangeRate />} />
 
           {/* eCommerce Routes */}
           <Route path='/ecommerce/' element={<Navigate to='/ecommerce/orders'/>} />

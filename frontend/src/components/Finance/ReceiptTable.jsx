@@ -1,11 +1,15 @@
 import React from 'react'
+import { useNavigate } from 'react-router'
 
 const ReceiptTable = () => {
+
+    let navigate = useNavigate()
+
   return (
     <div className='flex-1 ml-4'>
         <div className='flex flex-row justify-between mt-4'>
             <h2 className='text-darkviolette font-bold text-2xl '>Cash / Bank Receipt</h2>
-            <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white'>Create</button>
+            <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={() => { navigate("/finance/receipt/create") }}>Create</button>
         </div>
         <div className='mt-6 m-4'>
             <table className='w-full  table-auto'>
