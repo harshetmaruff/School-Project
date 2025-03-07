@@ -28,6 +28,7 @@ import CreateExchangeRate from './Pages/Finance/Create/CreateExchangeRate.jsx';
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
       <Routes>
+          <Route index element={<App/>}/>
           {/* Finance Routes */}
           <Route path='/finance/' element={<Navigate to='/finance/journal'/>} />
           <Route path='/finance/journal' element={<Journal />} />
