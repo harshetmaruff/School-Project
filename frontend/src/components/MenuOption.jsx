@@ -12,7 +12,7 @@ const MenuOption = ({Options, title}) => {
         {items.map((num) => {
 
           return(
-          <div className={`text-base m-4 ml-1 rounded-l-lg mr-0 p-1 ${ (num.selected) ? "text-lightviolette bg-white" : "text-white" }`} id={num.id}>
+          <div className={`text-base m-4 ml-1 rounded-l-lg mr-0 p-1 hover:bg-lavender ${ (num.selected) ? "text-lightviolette bg-white" : "text-white" }`} id={num.id}>
             <NavLink  className='flex' to={num.link}><img src={num.logo}  alt="" className='mr-1 fill-lightviolette'/> {num.name}</NavLink>
           </div>
           )
