@@ -18,12 +18,27 @@ diesel::table! {
 }
 
 diesel::table! {
+    currency (id) {
+        id -> Int4,
+        #[max_length = 5]
+        code -> Varchar,
+        rounding_factor -> Numeric,
+        decimal_places -> Nullable<Int4>,
+        #[max_length = 5]
+        symbol -> Nullable<Varchar>,
+        symbol_pos -> Nullable<Int4>,
+        #[max_length = 20]
+        currency_name -> Nullable<Varchar>,
+        created_at -> Nullable<Timestamp>,
+        updated_at -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
     exchange_rate (id) {
         id -> Int4,
-        #[max_length = 10]
-        base_currency -> Varchar,
-        #[max_length = 10]
-        target_currency -> Varchar,
+        base_currency_id -> Int4,
+        target_currency_id -> Int4,
         rate -> Numeric,
         effective_date -> Date,
         created_at -> Nullable<Timestamp>,
@@ -54,7 +69,7 @@ diesel::table! {
         #[max_length = 255]
         transaction_reference -> Nullable<Varchar>,
         transaction_date -> Date,
-        description -> Nullable<Text>,
+        description_text -> Nullable<Text>,
         debit -> Nullable<Numeric>,
         credit -> Nullable<Numeric>,
         #[max_length = 10]
@@ -122,6 +137,7 @@ diesel::joinable!(users -> user_role (user_role_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     coa_master,
+    currency,
     exchange_rate,
     financial_year,
     journal,

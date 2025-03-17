@@ -1,3 +1,16 @@
+-- Your SQL goes here
+
+-- Trigger for updated_at value of exchange_rate
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF ROW(NEW.*) IS DISTINCT FROM ROW(OLD.*) THEN
+        NEW.updated_at = CURRENT_TIMESTAMP;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE TABLE coa_master (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -10,6 +23,12 @@ CREATE TABLE coa_master (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TRIGGER update_date_coa_master
+BEFORE UPDATE
+ON coa_master
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
 -- Adding coa_master values (Ledgers)
 INSERT INTO coa_master(id, name, code, account_type, parent_id, currency_code, status, created_at, updated_at) VALUES
 (100, 'Assets', '1000', 'Asset', NULL, 'INR', 'Active', '2025-01-30 08:09:56', '2025-01-30 08:09:56'),
@@ -17,16 +36,6 @@ INSERT INTO coa_master(id, name, code, account_type, parent_id, currency_code, s
 (102, 'Equity', '3000', 'Equity', NULL, 'INR', 'Active', '2025-01-30 08:09:56', '2025-01-30 08:09:56'),
 (103, 'Expenses', '5000', 'Expense', NULL, 'INR', 'Active', '2025-01-30 08:09:56', '2025-01-30 08:09:56'),
 (104, 'Taxes', '6000', 'Liability', NULL, 'INR', 'Active', '2025-01-30 08:09:56', '2025-01-30 08:09:56');
-
-CREATE TABLE exchange_rate (
-  id SERIAL PRIMARY KEY,
-  base_currency VARCHAR(10) NOT NULL,
-  target_currency VARCHAR(10) NOT NULL,
-  rate DECIMAL(15, 6) NOT NULL,
-  effective_date DATE NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
 
 CREATE TABLE financial_year (
   id BIGINT NOT NULL PRIMARY KEY,
@@ -44,21 +53,6 @@ INSERT INTO financial_year(id, name, start_date, end_date, status, created_at, u
 (2, '2025', '2025-04-01', '2026-03-31', 'Open', '2025-01-30 13:03:27', '2025-01-30 13:03:27');
 
 --journal table
-CREATE TABLE journal (
-  id SERIAL PRIMARY KEY,
-  voucher_no VARCHAR(50) NOT NULL,
-  ledger_id INT NOT NULL,
-  transaction_type_id INT NOT NULL,
-  transaction_reference VARCHAR(255) DEFAULT NULL,
-  transaction_date DATE NOT NULL,
-  description TEXT,
-  debit DECIMAL(15, 2) DEFAULT 0.00,
-  credit DECIMAL(15, 2) DEFAULT 0.00,
-  currency_code VARCHAR(10) DEFAULT 'INR',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE ledger (
   id SERIAL PRIMARY KEY,
   coa_id INT NOT NULL,
@@ -73,6 +67,12 @@ CREATE TABLE ledger (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TRIGGER update_date_ledger
+BEFORE UPDATE
+ON ledger
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
 -- Adding ledger values
 INSERT INTO ledger(id, coa_id, name, code, parent_id, currency_code, financial_year, opening_balance, closing_balance) VALUES
 (1, 100, 'Assets', '1000', NULL, 'INR', '2024', 0.00, 0.00),
@@ -81,7 +81,28 @@ INSERT INTO ledger(id, coa_id, name, code, parent_id, currency_code, financial_y
 (4, 103, 'Expenses', '5000', NULL, 'INR', '2024', 0.00, 0.00),
 (5, 104, 'Taxes', '6000', NULL, 'INR', '2024', 0.00, 0.00);
 
------ Journal FUnctions & Triggers --------------------------------
+-- Journal Table
+CREATE TABLE journal (
+  id SERIAL PRIMARY KEY,
+  voucher_no VARCHAR(50) NOT NULL,
+  ledger_id INT NOT NULL,
+  transaction_type_id INT NOT NULL,
+  transaction_reference VARCHAR(255) DEFAULT NULL,
+  transaction_date DATE NOT NULL,
+  description_text TEXT,
+  debit DECIMAL(15, 2) DEFAULT 0.00,
+  credit DECIMAL(15, 2) DEFAULT 0.00,
+  currency_code VARCHAR(10) DEFAULT 'INR',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER update_date_journal
+BEFORE UPDATE
+ON journal
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
 CREATE OR REPLACE FUNCTION update_closing_balance_on_delete() 
 RETURNS TRIGGER AS $$
 BEGIN
@@ -137,6 +158,57 @@ AFTER UPDATE ON journal
 FOR EACH ROW
 EXECUTE FUNCTION update_closing_balance_on_update();
 -------------------------------------------------------------------------
+
+
+-------------------- Exchange Rate --------------------------
+CREATE TABLE currency (
+  id SERIAL PRIMARY KEY,
+  code VARCHAR(5) UNIQUE NOT NULL,
+  rounding_factor DECIMAL(15, 6) NOT NULL,
+  decimal_places INT, 
+  symbol VARCHAR(5) UNIQUE,
+  symbol_pos INT,
+  currency_name VARCHAR(20) UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE exchange_rate (
+  id SERIAL PRIMARY KEY,
+  base_currency_id INT NOT NULL,
+  target_currency_id INT NOT NULL,
+  rate DECIMAL(15, 6) NOT NULL,
+  effective_date DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE exchange_rate
+    ADD CONSTRAINT fk_target_currency FOREIGN KEY (target_currency_id) REFERENCES currency(id) ON DELETE SET NULL;
+
+ALTER TABLE exchange_rate
+    ADD CONSTRAINT fk_base_currency FOREIGN KEY (base_currency_id) REFERENCES currency(id) ON DELETE SET NULL;
+
+INSERT INTO currency(code, rounding_factor, decimal_places, symbol, symbol_pos, currency_name) VALUES
+('INR', 0.01, 2, '₹', 1, 'Indian Rupee');
+
+--TRIGGER For Exchange Rate
+CREATE TRIGGER update_date_exchange_rate
+BEFORE UPDATE
+ON exchange_rate
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_date_currency
+BEFORE UPDATE
+ON currency
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+-----------------------------------------------------------------------
+
+
+--- SQL DATA DUMP
+
 
 CREATE TABLE transaction_type (
   id SERIAL PRIMARY KEY,

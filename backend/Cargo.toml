@@ -13,9 +13,13 @@ serde_json = "1.0.134"
 #-----Data types------
 chrono = { version = "0.4.39", features = ["serde"]}
 bigdecimal = {version = "0.4.7", features = ["serde"]}
+
 #----Database Framework----
-diesel = {version = "2.2.6", features = ["postgres", "chrono", "numeric", "serde_json"]}
 dotenvy = "0.15"
 
 #----Debug----
 env_logger = "0.11.6"
+
+#----Encryption----
+jsonwebtoken = "9.3.1"
+diesel = {version = "2.2.6", features = ["postgres", "chrono", "numeric", "serde_json"]}
