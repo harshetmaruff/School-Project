@@ -207,6 +207,62 @@ EXECUTE FUNCTION update_updated_at_column();
 -----------------------------------------------------------------------
 
 
+-- Partners present in the Business AKA Customer, Supplier, Employee, Shareholder
+CREATE TABLE partner (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  partner_type TEXT CHECK (partner_type IN ('Customer', 'Supplier', 'Employee', 'Shareholder')) NOT NULL,
+  gst_number VARCHAR(20),
+  pan_number VARCHAR(10),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER update_date_partner
+BEFORE UPDATE
+ON partner
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TABLE address_type (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) UNIQUE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER update_date_address_type
+BEFORE UPDATE
+ON address_type
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TABLE address (
+  id SERIAL PRIMARY KEY,
+  partner_id INT,
+  address_type_id INT,
+  address_line TEXT,
+  city VARCHAR(100),
+  state_name VARCHAR(100),
+  postal_code VARCHAR(10) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE address
+  ADD CONSTRAINT fk_partner FOREIGN KEY (partner_id) REFERENCES partner(id) ON DELETE SET NULL;
+
+ALTER TABLE address
+  ADD CONSTRAINT fk_address_type FOREIGN KEY (address_type_id) REFERENCES address_type(id) ON DELETE SET NULL;
+
+CREATE TRIGGER update_date_address
+BEFORE UPDATE
+ON address
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+
+
 --- SQL DATA DUMP
 
 
