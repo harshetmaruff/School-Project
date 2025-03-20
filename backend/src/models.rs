@@ -150,7 +150,7 @@ pub struct NewCurrency {
 }
 
 // ExchangeRate Data
-#[derive(Queryable, Selectable, Serialize, Deserialize)]
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::exchange_rate)]
 #[diesel(check_for_backend(Pg))]
 pub struct ExchangeRate {
@@ -173,3 +173,65 @@ pub struct NewExchangeRate {
 }
 
 // -------------------------------------------
+
+
+// --- Partner Structures Partner, Address, Address_type -----
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::partner)]
+#[diesel(check_for_backend(Pg))]
+pub struct Partner {
+    pub id: i32,
+    pub name: String,
+    pub partner_type: String,
+    pub gst_number: Option<String>,
+    pub pan_number: Option<String>
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::partner)]
+pub struct NewPartner {
+    pub name: String,
+    pub partner_type: String,
+    pub gst_number: Option<String>,
+    pub pan_number: Option<String>
+}
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::address)]
+#[diesel(check_for_backend(Pg))]
+pub struct Address {
+    pub id: i32,
+    pub partner_id: i32,
+    pub address_type_id: i32,
+    pub address_line: Option<String>,
+    pub city: Option<String>,
+    pub state_name: Option<String>,
+    pub postal_code: String
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::address )]
+pub struct NewAddress {
+    pub partner_id: i32,
+    pub address_type_id: i32,
+    pub address_line: Option<String>,
+    pub city: Option<String>,
+    pub state_name: Option<String>,
+    pub postal_code: String
+}
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::address_type)]
+#[diesel(check_for_backend(Pg))]
+pub struct AddressType {
+    pub id: i32,
+    pub name: String
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::address_type)]
+pub struct NewAddressType {
+    pub name: String
+}
+

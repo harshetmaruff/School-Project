@@ -239,8 +239,8 @@ EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TABLE address (
   id SERIAL PRIMARY KEY,
-  partner_id INT,
-  address_type_id INT,
+  partner_id INT NOT NULL,
+  address_type_id INT NOT NULL,
   address_line TEXT,
   city VARCHAR(100),
   state_name VARCHAR(100),
