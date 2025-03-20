@@ -23,16 +23,16 @@ async fn main() -> std::io::Result<()> {
             .max_age(3600);
         App::new()
             .wrap(Logger::default()) // Logging Middleware
-            .wrap(cors)
-            .service(login)
-            .service(get_currency)
-            .service(create_currency_)
-            .service(edit_currency_)
-            .service(remove_currency)
-            .service(get_exchange_rate)
-            .service(post_exchange_rate)
-            .service(edit_exchange_rate_)
-            .service(remove_exchange_rate_)
+            .wrap(cors)                                 //                    API Available
+            .service(login)                             //                    /login                            POST
+            .service(get_currency)                      //                    /accounts/currency                GET
+            .service(create_currency_)                  //                    /accounts/currency                POST
+            .service(edit_currency_)                    //                    /accounts/currency/edit           POST
+            .service(remove_currency)                   //                    /accounts/currency/remove         POST
+            .service(get_exchange_rate)                 //                    /accounts/get_exchange_rate       POST
+            .service(post_exchange_rate)                //                    /accounts/exchange_rate           POST
+            .service(edit_exchange_rate_)               //                    /accounts/exchange_rate/edit      POST
+            .service(remove_exchange_rate_)             //                    /accounts/exchange_rate/remove    POST
     })
     .bind("127.0.0.1:8080")?
     .run()

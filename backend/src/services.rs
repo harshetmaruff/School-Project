@@ -36,7 +36,7 @@ async fn login(param: web::Json<LoginRequest>) -> impl Responder {
 // ---------- Exchange Rate -------------
 
 // get a list of currency
-#[get("/currency")]
+#[get("/accounts/currency")]
 async fn get_currency(req: actix_web::HttpRequest) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
@@ -50,7 +50,7 @@ async fn get_currency(req: actix_web::HttpRequest) -> impl Responder {
 }
 
 // add currency
-#[post("/currency")]
+#[post("/accounts/currency")]
 async fn create_currency_(req: actix_web::HttpRequest, data: web::Json<NewCurrency>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
@@ -64,7 +64,7 @@ async fn create_currency_(req: actix_web::HttpRequest, data: web::Json<NewCurren
 }
 
 // edit currency
-#[post("/currency/edit")]
+#[post("/accounts/currency/edit")]
 async fn edit_currency_(req: actix_web::HttpRequest, data: web::Json<Currency>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
@@ -78,7 +78,7 @@ async fn edit_currency_(req: actix_web::HttpRequest, data: web::Json<Currency>) 
 }
 
 // Remove Currency
-#[post("/currency/remove")]
+#[post("/accounts/currency/remove")]
 async fn remove_currency(req: actix_web::HttpRequest, data: web::Json<Currency>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
@@ -94,7 +94,7 @@ async fn remove_currency(req: actix_web::HttpRequest, data: web::Json<Currency>)
 //Exchange Rate APIs
 
 //get Exchange Rate values based on currencies
-#[post("/get_exchange_rate")]
+#[post("/accounts/get_exchange_rate")]
 async fn get_exchange_rate(req: actix_web::HttpRequest, data: web::Json<Currency>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
@@ -108,7 +108,7 @@ async fn get_exchange_rate(req: actix_web::HttpRequest, data: web::Json<Currency
 }
 
 //create a exchange rate values for currencies
-#[post("/exchange_rate")]
+#[post("/accounts/exchange_rate")]
 async fn post_exchange_rate(req: actix_web::HttpRequest, data: web::Json<NewExchangeRate>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
@@ -121,7 +121,7 @@ async fn post_exchange_rate(req: actix_web::HttpRequest, data: web::Json<NewExch
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
 }
 
-#[post("/exchange_rate/edit")]
+#[post("/accounts/exchange_rate/edit")]
 async fn edit_exchange_rate_(req: actix_web::HttpRequest, data: web::Json<ExchangeRate>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
@@ -134,7 +134,7 @@ async fn edit_exchange_rate_(req: actix_web::HttpRequest, data: web::Json<Exchan
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
 }
 
-#[post("/exchange_rate/remove")]
+#[post("/accounts/exchange_rate/remove")]
 async fn remove_exchange_rate_(req: actix_web::HttpRequest, data: web::Json<ExchangeRate>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
