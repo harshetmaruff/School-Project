@@ -160,14 +160,14 @@ const CreateJournal = () => {
                                     <input 
                                     type="text" 
                                     value={item.Partner}
-                                    onChange={(e) => handleChange(item.id, "Account", e.target.value)}
+                                    onChange={(e) => handleChange(item.id, "Partner", e.target.value)}
                                     />
                                   </td>
                                   <td className='p-2'>
                                     <input 
                                     type="text" 
                                     value={item.Description}
-                                    onChange={(e) => handleChange(item.id, "Account", e.target.value)}
+                                    onChange={(e) => handleChange(item.id, "Description", e.target.value)}
                                     />
                                   </td>
                                   <td className='p-2'>
