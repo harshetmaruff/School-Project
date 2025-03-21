@@ -234,4 +234,26 @@ pub struct AddressType {
 pub struct NewAddressType {
     pub name: String
 }
+// ------------------------------------------
 
+// -- Financial Year ------------------------
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::financial_year)]
+#[diesel(check_for_backend(Pg))]
+pub struct FinancialYear {
+    pub id: i64,
+    pub name: String,
+    pub start_date: NaiveDate,
+    pub end_date: NaiveDate,
+    pub status: Option<String>
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::address_type)]
+pub struct NewFinancialYear {
+    pub name: String,
+    pub start_date: NaiveDate,
+    pub end_date: NaiveDate,
+    pub status: Option<String>
+}
