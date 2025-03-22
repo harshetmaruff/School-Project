@@ -24,6 +24,7 @@ import CreateCreditNote from './Pages/Finance/Create/CreateCreditNote.jsx';
 import CreateDebitNote from './Pages/Finance/Create/CreateDebitNote.jsx';
 import CreateBank from './Pages/Finance/Create/CreateBank.jsx';
 import CreateExchangeRate from './Pages/Finance/Create/CreateExchangeRate.jsx';
+import POS from './Pages/POS/POS.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -54,9 +55,11 @@ createRoot(document.getElementById('root')).render(
           <Route path='/ecommerce/' element={<Navigate to='/ecommerce/orders'/>} />
           <Route path='/ecommerce/orders/' element={<Orders />} />
 
+          
           {/* Point Of Sale Routes */}
           <Route path='/pos/' element={<Navigate to='/pos/counters'/>} />
           <Route path='/pos/counters' element={<Counters />}/>
+          <Route path='/pos/counters/:cid' element={<POS />} />
 
           {/* Teams Routes */}
           <Route path='/teams/' element={<Navigate to='/teams/vendor'/>}/>
