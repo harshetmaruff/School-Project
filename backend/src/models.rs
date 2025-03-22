@@ -250,7 +250,7 @@ pub struct FinancialYear {
 }
 
 #[derive(Insertable, Serialize, Deserialize)]
-#[diesel(table_name = crate::schema::address_type)]
+#[diesel(table_name = crate::schema::financial_year)]
 pub struct NewFinancialYear {
     pub name: String,
     pub start_date: NaiveDate,

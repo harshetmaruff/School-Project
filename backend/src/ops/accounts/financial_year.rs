@@ -1,13 +1,12 @@
 use crate::models::FinancialYear;
 use crate::models::NewFinancialYear;
 use crate::ops::con::establish_connection;
-use crate::schema::financial_year::end_date;
-use crate::schema::ledger::financial_year;
 
 use diesel::query_dsl::methods::FilterDsl;
 use diesel::ExpressionMethods;
 use diesel::RunQueryDsl;
 use diesel::query_dsl::methods::SelectDsl;
+use crate::schema::financial_year;
 
 use diesel::SelectableHelper;
 use serde_json::json;
@@ -50,6 +49,8 @@ pub fn create_financial_year(arg: NewFinancialYear) -> serde_json::Value {
 }
 
 pub fn edit_financial_year(arg: FinancialYear) -> serde_json::Value {
+    use crate::schema::financial_year::dsl::*;
+
     let mut con = establish_connection();
 
     match diesel::update(financial_year.filter(id.eq(arg.id)))
@@ -71,6 +72,8 @@ pub fn edit_financial_year(arg: FinancialYear) -> serde_json::Value {
 }
 
 pub fn delete_financial_year(arg: FinancialYear) -> serde_json::Value {
+    use crate::schema::financial_year::dsl::*;
+
     let mut con = establish_connection();
 
     match diesel::delete(financial_year.filter(id.eq(arg.id)))
