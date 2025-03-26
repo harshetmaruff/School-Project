@@ -1,4 +1,82 @@
 -- Your SQL goes here
+CREATE TABLE transaction_type (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  description TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE partner (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  partner_type TEXT CHECK (partner_type IN ('Customer', 'Supplier', 'Employee', 'Shareholder')) NOT NULL,
+  gst_number VARCHAR(20),
+  pan_number VARCHAR(10),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER update_date_partner
+BEFORE UPDATE
+ON partner
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TABLE address_type (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) UNIQUE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO address_type (name) VALUES
+('Registered address'),
+('Head Office'),
+('Branch'),
+('Warehouse'),
+('Site address'),
+('Mailing address'),
+('Billing address'),
+('Shipping address'),
+('Previous address'),
+('Emergency address'),
+('Temporary address'),
+('Permanent address'),
+('Business address'),
+('Residential address');
+
+CREATE TRIGGER update_date_address_type
+BEFORE UPDATE
+ON address_type
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TABLE address (
+  id SERIAL PRIMARY KEY,
+  partner_id INT NOT NULL,
+  address_type_id INT NOT NULL,
+  address_line TEXT,
+  city VARCHAR(100),
+  state_name VARCHAR(100),
+  postal_code VARCHAR(10) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE address
+  ADD CONSTRAINT fk_partner FOREIGN KEY (partner_id) REFERENCES partner(id) ON DELETE SET NULL;
+
+ALTER TABLE address
+  ADD CONSTRAINT fk_address_type FOREIGN KEY (address_type_id) REFERENCES address_type(id) ON DELETE SET NULL;
+
+CREATE TRIGGER update_date_address
+BEFORE UPDATE
+ON address
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+
 
 -- Trigger for updated_at value of exchange_rate
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -37,7 +115,7 @@ EXECUTE FUNCTION update_updated_at_column();
 -- (103, 'Expenses', '5000', 'Expense', NULL, 'INR', 'Active', '2025-01-30 08:09:56', '2025-01-30 08:09:56'),
 -- (104, 'Taxes', '6000', 'Liability', NULL, 'INR', 'Active', '2025-01-30 08:09:56', '2025-01-30 08:09:56');
 
-INSERT INTO `coa_master` (`id`, `name`, `code`, `account_type`, `parent_id`, `currency_code`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO coa_master(id, name, code, account_type, parent_id, currency_code, status, created_at, updated_at) VALUES
 (100, 'Assets', '1000', 'Asset', NULL, 'INR', 'Active', '2025-01-30 08:09:56', '2025-01-30 08:09:56'),
 (101, 'Current Assets', '1100', 'Asset', 100, 'INR', 'Active', '2025-01-30 08:09:56', '2025-01-30 09:28:36'),
 (102, 'Cash in Hand', '1110', 'Asset', 101, 'INR', 'Active', '2025-01-30 08:09:56', '2025-01-30 09:29:26'),
@@ -117,7 +195,7 @@ EXECUTE FUNCTION update_updated_at_column();
 -- (4, 103, 'Expenses', '5000', NULL, 'INR', '2024', 0.00, 0.00),
 -- (5, 104, 'Taxes', '6000', NULL, 'INR', '2024', 0.00, 0.00);
 
-INSERT INTO `ledger` (`id`, `coa_id`, `name`, `code`, `parent_id`, `currency_code`, `financial_year`, `opening_balance`, `closing_balance`, `created_at`, `updated_at`) VALUES
+INSERT INTO ledger(id, coa_id, name, code, parent_id, currency_code, financial_year, opening_balance, closing_balance, created_at, updated_at) VALUES
 (1, 100, 'Assets', '1000', NULL, 'INR', '2024', 0.00, 0.00, '2025-01-30 09:15:37', '2025-01-30 09:15:37'),
 (2, 101, 'Current Assets', '1100', 1, 'INR', '2024', 0.00, 0.00, '2025-01-30 09:15:37', '2025-01-30 09:34:51'),
 (3, 102, 'Cash in Hand', '1110', 2, 'INR', '2024', 0.00, 0.00, '2025-01-30 09:15:37', '2025-01-30 09:34:51'),
@@ -155,7 +233,8 @@ INSERT INTO `ledger` (`id`, `coa_id`, `name`, `code`, `parent_id`, `currency_cod
 -- Journal Table
 CREATE TABLE journal (
   id SERIAL PRIMARY KEY,
-  voucher_no VARCHAR(50) NOT NULL,
+  voucher_name VARCHAR(50) NOT NULL,
+  voucher_id VARCHAR(50) NOT NULL,
   ledger_id INT NOT NULL,
   partner_id INT DEFAULT NULL,
   transaction_type_id INT NOT NULL,
@@ -172,8 +251,7 @@ CREATE TABLE journal (
 ALTER TABLE journal
   ADD CONSTRAINT fk_ledger FOREIGN KEY (ledger_id) REFERENCES ledger(id) ON DELETE CASCADE,
   ADD CONSTRAINT fk_transaction_type FOREIGN KEY (transaction_type_id) REFERENCES transaction_type(id) ON DELETE RESTRICT,
-  ADD CONSTRAINT fk_partner FOREIGN KEY (partner_id) REFERENCES partner(id) ON DELETE SET NULL,
-  ADD CONSTRAINT voucher_no_unique UNIQUE (voucher_no);
+  ADD CONSTRAINT fk_partner FOREIGN KEY (partner_id) REFERENCES partner(id) ON DELETE SET NULL;
 
 CREATE TRIGGER update_date_journal
 BEFORE UPDATE
@@ -284,89 +362,13 @@ FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 -----------------------------------------------------------------------
 
+-----------------------------------------------------------------------
 
 -- Partners present in the Business AKA Customer, Supplier, Employee, Shareholder
-CREATE TABLE partner (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  partner_type TEXT CHECK (partner_type IN ('Customer', 'Supplier', 'Employee', 'Shareholder')) NOT NULL,
-  gst_number VARCHAR(20),
-  pan_number VARCHAR(10),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TRIGGER update_date_partner
-BEFORE UPDATE
-ON partner
-FOR EACH ROW
-EXECUTE FUNCTION update_updated_at_column();
-
-CREATE TABLE address_type (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100) UNIQUE NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-INSERT INTO address_type (name) VALUES
-('Registered address'),
-('Head Office'),
-('Branch'),
-('Warehouse'),
-('Site address'),
-('Mailing address'),
-('Billing address'),
-('Shipping address'),
-('Previous address'),
-('Emergency address'),
-('Temporary address'),
-('Permanent address'),
-('Business address'),
-('Residential address');
-
-CREATE TRIGGER update_date_address_type
-BEFORE UPDATE
-ON address_type
-FOR EACH ROW
-EXECUTE FUNCTION update_updated_at_column();
-
-CREATE TABLE address (
-  id SERIAL PRIMARY KEY,
-  partner_id INT NOT NULL,
-  address_type_id INT NOT NULL,
-  address_line TEXT,
-  city VARCHAR(100),
-  state_name VARCHAR(100),
-  postal_code VARCHAR(10) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-ALTER TABLE address
-  ADD CONSTRAINT fk_partner FOREIGN KEY (partner_id) REFERENCES partner(id) ON DELETE SET NULL;
-
-ALTER TABLE address
-  ADD CONSTRAINT fk_address_type FOREIGN KEY (address_type_id) REFERENCES address_type(id) ON DELETE SET NULL;
-
-CREATE TRIGGER update_date_address
-BEFORE UPDATE
-ON address
-FOR EACH ROW
-EXECUTE FUNCTION update_updated_at_column();
-
-
 
 --- SQL DATA DUMP
 
 
-CREATE TABLE transaction_type (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  description TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
 
 -- INSERT INTO transaction_type(id, name, description, created_at, updated_at) VALUES
 -- (1, 'Sales Invoice', 'Invoice issued for sales transactions', '2025-01-30 09:05:38', '2025-01-30 09:05:38'),
@@ -375,7 +377,7 @@ CREATE TABLE transaction_type (
 -- (4, 'Payment Made', 'Payments made to vendors or suppliers', '2025-01-30 09:05:38', '2025-01-30 09:05:38'),
 -- (5, 'Journal Entry', 'Manual accounting journal entry', '2025-01-30 09:05:38', '2025-01-30 09:05:38');
 
-INSERT INTO `transaction_type` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
+INSERT INTO transaction_type(id, name, description, created_at, updated_at) VALUES
 (1, 'Sales Invoice', 'Invoice issued for sales transactions', '2025-01-30 09:05:38', '2025-01-30 09:05:38'),
 (2, 'Purchase Invoice', 'Invoice received for purchases', '2025-01-30 09:05:38', '2025-01-30 09:05:38'),
 (3, 'Payment Received', 'Payments received from customers', '2025-01-30 09:05:38', '2025-01-30 09:05:38'),
