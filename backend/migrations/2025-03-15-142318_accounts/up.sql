@@ -233,8 +233,7 @@ INSERT INTO ledger(id, coa_id, name, code, parent_id, currency_code, financial_y
 -- Journal Table
 CREATE TABLE journal (
   id SERIAL PRIMARY KEY,
-  voucher_name VARCHAR(50) NOT NULL,
-  voucher_id VARCHAR(50) NOT NULL,
+  voucher_id VARCHAR(100) NOT NULL,
   ledger_id INT NOT NULL,
   partner_id INT DEFAULT NULL,
   transaction_type_id INT NOT NULL,

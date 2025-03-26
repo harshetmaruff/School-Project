@@ -37,7 +37,7 @@ pub struct User {
 #[diesel(check_for_backend(Pg))]
 pub struct Journal {
     pub id: i32,
-    pub voucher_no: String,
+    pub voucher_id: String,
     pub ledger_id: i32,
     pub transaction_type_id: i32,
     pub transaction_reference: Option<String>,
@@ -53,7 +53,7 @@ pub struct Journal {
 #[derive(Insertable, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::journal)]
 pub struct NewJournal {
-    pub voucher_no: String,
+    pub voucher_id: String,
     pub ledger_id: i32,
     pub transaction_type_id: i32,
     pub transaction_reference: Option<String>,

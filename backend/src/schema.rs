@@ -89,9 +89,10 @@ diesel::table! {
 diesel::table! {
     journal (id) {
         id -> Int4,
-        #[max_length = 50]
-        voucher_no -> Varchar,
+        #[max_length = 100]
+        voucher_id -> Varchar,
         ledger_id -> Int4,
+        partner_id -> Nullable<Int4>,
         transaction_type_id -> Int4,
         #[max_length = 255]
         transaction_reference -> Nullable<Varchar>,
@@ -172,9 +173,21 @@ diesel::table! {
     }
 }
 
+diesel::table! {
+    voucher_codes (voucher_name) {
+        #[max_length = 100]
+        voucher_name -> Varchar,
+        create_date -> Date,
+        total -> Nullable<Numeric>,
+        #[max_length = 10]
+        currency_code -> Nullable<Varchar>,
+    }
+}
+
 diesel::joinable!(address -> address_type (address_type_id));
 diesel::joinable!(address -> partner (partner_id));
 diesel::joinable!(journal -> ledger (ledger_id));
+diesel::joinable!(journal -> partner (partner_id));
 diesel::joinable!(journal -> transaction_type (transaction_type_id));
 diesel::joinable!(ledger -> coa_master (coa_id));
 diesel::joinable!(users -> user_role (user_role_id));
@@ -192,4 +205,5 @@ diesel::allow_tables_to_appear_in_same_query!(
     transaction_type,
     user_role,
     users,
+    voucher_codes,
 );
