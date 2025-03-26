@@ -54,7 +54,7 @@ pub fn edit_journal(arg: Journal) -> serde_json::Value {
 
     match diesel::update(journal.filter(id.eq(arg.id)))
         .set((
-            voucher_no.eq(arg.voucher_no),
+            voucher_id.eq(arg.voucher_id),
             ledger_id.eq(arg.ledger_id),
             transaction_type_id.eq(arg.transaction_type_id),
             transaction_reference.eq(arg.transaction_reference),

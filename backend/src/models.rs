@@ -257,3 +257,15 @@ pub struct NewFinancialYear {
     pub end_date: NaiveDate,
     pub status: Option<String>
 }
+
+// -- Voucher Codes --------------------------------
+
+#[derive(Queryable, Insertable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::voucher_codes)]
+#[diesel(check_for_backend(Pg))]
+pub struct VoucherCodes {
+    pub voucher_name: String,
+    pub create_date: NaiveDate,
+    pub total: Option<BigDecimal>,
+    pub currency_code: Option<String>
+}
