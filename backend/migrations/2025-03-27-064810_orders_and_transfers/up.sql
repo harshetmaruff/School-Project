@@ -29,15 +29,14 @@ ALTER TABLE orders_details
 
 CREATE TABLE transfer (
     id SERIAL PRIMARY KEY,
-    orders_id INT,
     product_id INT,
+    warehouse_id INT,
+    transfer_type TEXT CHECK (transfer_type IN ('Order', 'Delivery')) NOT NULL,
     quantity INT NOT NULL,
     sent_date DATE NOT NULL,
     received_date DATE DEFAULT NULL
 );
 
-ALTER TABLE transfer
-    ADD CONSTRAINT fk_transfer_orders FOREIGN KEY (orders_id) REFERENCES orders(id) ON DELETE SET NULL;
 
 ALTER TABLE transfer
     ADD CONSTRAINT fk_transfer_product FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE SET NULL;
