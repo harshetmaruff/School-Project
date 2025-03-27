@@ -34,7 +34,7 @@ pub fn create_journal(arg: NewJournal) -> serde_json::Value {
     {
         Ok(rows_inserted) if rows_inserted > 0 => json!({
             "success": true,
-            "message": "Currency created successfully"
+            "message": "Journal created successfully"
         }),
         Ok(_) =>json!({
             "success": false,
@@ -69,7 +69,7 @@ pub fn edit_journal(arg: Journal) -> serde_json::Value {
             Ok(0) => json!({ "success": false, "error": "Currency not found" }),
             Ok(_) => json!({ 
                 "success": true, 
-                "message": "Currency updated successfully"
+                "message": "Journal updated successfully"
             }),
             Err(err) => json!({ "success": false, "error": format!("Database error: {}", err) }),
         }
