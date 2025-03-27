@@ -269,3 +269,27 @@ pub struct VoucherCodes {
     pub total: Option<BigDecimal>,
     pub currency_code: Option<String>
 }
+
+
+// -- Bank ----------------------------------------------------
+
+// Bank Accounts ------
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::bank_account)]
+#[diesel(check_for_backend(Pg))]
+pub struct BankAccount {
+    pub id: i32,
+    pub account_no: String,
+    pub bank_name: String,
+    pub bic: String
+}
+
+// Create Bank Account ---
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::bank_account)]
+pub struct NewBankAccount {
+    pub account_no: String,
+    pub bank_name: String,
+    pub bic: String
+}

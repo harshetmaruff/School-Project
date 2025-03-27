@@ -28,6 +28,18 @@ diesel::table! {
 }
 
 diesel::table! {
+    bank_account (id) {
+        id -> Int4,
+        #[max_length = 15]
+        account_no -> Varchar,
+        #[max_length = 70]
+        bank_name -> Varchar,
+        #[max_length = 20]
+        bic -> Varchar,
+    }
+}
+
+diesel::table! {
     coa_master (id) {
         id -> Int4,
         #[max_length = 255]
@@ -195,6 +207,7 @@ diesel::joinable!(users -> user_role (user_role_id));
 diesel::allow_tables_to_appear_in_same_query!(
     address,
     address_type,
+    bank_account,
     coa_master,
     currency,
     exchange_rate,
