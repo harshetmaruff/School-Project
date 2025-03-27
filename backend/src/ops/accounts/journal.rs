@@ -66,7 +66,7 @@ pub fn edit_journal(arg: Journal) -> serde_json::Value {
         ))
         .execute(&mut con)
         {
-            Ok(0) => json!({ "success": false, "error": "Currency not found" }),
+            Ok(0) => json!({ "success": false, "error": "Journal not found" }),
             Ok(_) => json!({ 
                 "success": true, 
                 "message": "Journal updated successfully"
