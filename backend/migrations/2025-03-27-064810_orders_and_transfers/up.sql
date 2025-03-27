@@ -18,7 +18,7 @@ CREATE TABLE orders_details (
     id SERIAL PRIMARY KEY,
     orders_id INT,
     product_id INT,
-    order_quantity INT NOT NULL
+    order_quantity INT
 );
 
 ALTER TABLE orders_details
