@@ -2,3 +2,4 @@
 DROP TABLE inventory;
 DROP TABLE warehouse;
 DROP TABLE product;
+DROP TABLE product_category;
