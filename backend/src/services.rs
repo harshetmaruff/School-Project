@@ -1,7 +1,7 @@
 use actix_web::{get, post, web::{self, Data, Json, Path}, HttpResponse, Responder};
 use serde_json::json;
 
-use crate::models::Currency;
+use crate::{models::Currency, ops::teams::partner::list_partner};
 use crate::models::LoginRequest;
 use crate::models::NewCurrency;
 use crate::models::NewExchangeRate;
@@ -15,6 +15,7 @@ use crate::ops::accounts::exchange_rate::edit_exchange_rate;
 use crate::ops::accounts::exchange_rate::list_currency;
 use crate::ops::accounts::exchange_rate::list_exchange_rate_of_currency;
 use crate::ops::accounts::exchange_rate::remove_exchange_rate;
+use crate::ops::teams::partner;
 
 use crate::ops::userdata_handler::verify_user;
 
@@ -147,3 +148,17 @@ async fn remove_exchange_rate_(req: actix_web::HttpRequest, data: web::Json<Exch
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
 }
 // ----------------------------------------
+
+// Partner --------------------------------
+#[post("/partner")]
+async fn partner_list(req: actix_web::HttpRequest) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(list_partner());
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}

@@ -293,3 +293,13 @@ pub struct NewBankAccount {
     pub bank_name: String,
     pub bic: String
 }
+
+// --- Product -----------------------------------
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::product_category)]
+#[diesel(check_for_backend(Pg))]
+pub struct ProductCategory {
+    pub id: i32,
+    pub category_name: String
+}

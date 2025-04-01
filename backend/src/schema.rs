@@ -74,6 +74,26 @@ diesel::table! {
 }
 
 diesel::table! {
+    delivery (id) {
+        id -> Int4,
+        customer_id -> Nullable<Int4>,
+        warehouse_id -> Nullable<Int4>,
+        sales_date -> Nullable<Date>,
+        expected_date -> Nullable<Date>,
+        actual_date -> Nullable<Date>,
+    }
+}
+
+diesel::table! {
+    delivery_details (id) {
+        id -> Int4,
+        delivery_id -> Nullable<Int4>,
+        product_id -> Nullable<Int4>,
+        product_quantity -> Nullable<Int4>,
+    }
+}
+
+diesel::table! {
     exchange_rate (id) {
         id -> Int4,
         base_currency_id -> Int4,
@@ -95,6 +115,17 @@ diesel::table! {
         status -> Nullable<Text>,
         created_at -> Nullable<Timestamp>,
         updated_at -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
+    inventory (id) {
+        id -> Int4,
+        product_id -> Int4,
+        warehouse_id -> Int4,
+        quantity_available -> Nullable<Int4>,
+        minimum_stock_level -> Nullable<Int4>,
+        maximum_stock_level -> Int4,
     }
 }
 
@@ -140,6 +171,26 @@ diesel::table! {
 }
 
 diesel::table! {
+    orders (id) {
+        id -> Int4,
+        provider_id -> Nullable<Int4>,
+        warehouse_id -> Nullable<Int4>,
+        order_date -> Nullable<Date>,
+        expected_date -> Nullable<Date>,
+        actual_date -> Nullable<Date>,
+    }
+}
+
+diesel::table! {
+    orders_details (id) {
+        id -> Int4,
+        orders_id -> Nullable<Int4>,
+        product_id -> Nullable<Int4>,
+        order_quantity -> Nullable<Int4>,
+    }
+}
+
+diesel::table! {
     partner (id) {
         id -> Int4,
         #[max_length = 255]
@@ -155,6 +206,29 @@ diesel::table! {
 }
 
 diesel::table! {
+    product (id) {
+        id -> Int4,
+        #[max_length = 100]
+        product_code -> Varchar,
+        #[max_length = 100]
+        bar_code -> Varchar,
+        #[max_length = 100]
+        product_name -> Varchar,
+        product_category_id -> Int4,
+        #[max_length = 100]
+        product_description -> Nullable<Varchar>,
+    }
+}
+
+diesel::table! {
+    product_category (id) {
+        id -> Int4,
+        #[max_length = 100]
+        category_name -> Varchar,
+    }
+}
+
+diesel::table! {
     transaction_type (id) {
         id -> Int4,
         #[max_length = 100]
@@ -162,6 +236,18 @@ diesel::table! {
         description -> Nullable<Text>,
         created_at -> Nullable<Timestamp>,
         updated_at -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
+    transfer (id) {
+        id -> Int4,
+        product_id -> Nullable<Int4>,
+        warehouse_id -> Nullable<Int4>,
+        transfer_type -> Text,
+        quantity -> Int4,
+        sent_date -> Date,
+        received_date -> Nullable<Date>,
     }
 }
 
@@ -196,12 +282,31 @@ diesel::table! {
     }
 }
 
+diesel::table! {
+    warehouse (id) {
+        id -> Int4,
+        #[max_length = 100]
+        warehouse_name -> Nullable<Varchar>,
+    }
+}
+
 diesel::joinable!(address -> address_type (address_type_id));
 diesel::joinable!(address -> partner (partner_id));
+diesel::joinable!(delivery -> partner (customer_id));
+diesel::joinable!(delivery -> warehouse (warehouse_id));
+diesel::joinable!(delivery_details -> delivery (delivery_id));
+diesel::joinable!(inventory -> product (product_id));
+diesel::joinable!(inventory -> warehouse (warehouse_id));
 diesel::joinable!(journal -> ledger (ledger_id));
 diesel::joinable!(journal -> partner (partner_id));
 diesel::joinable!(journal -> transaction_type (transaction_type_id));
 diesel::joinable!(ledger -> coa_master (coa_id));
+diesel::joinable!(orders -> partner (provider_id));
+diesel::joinable!(orders -> warehouse (warehouse_id));
+diesel::joinable!(orders_details -> orders (orders_id));
+diesel::joinable!(orders_details -> product (product_id));
+diesel::joinable!(product -> product_category (product_category_id));
+diesel::joinable!(transfer -> product (product_id));
 diesel::joinable!(users -> user_role (user_role_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
@@ -210,13 +315,22 @@ diesel::allow_tables_to_appear_in_same_query!(
     bank_account,
     coa_master,
     currency,
+    delivery,
+    delivery_details,
     exchange_rate,
     financial_year,
+    inventory,
     journal,
     ledger,
+    orders,
+    orders_details,
     partner,
+    product,
+    product_category,
     transaction_type,
+    transfer,
     user_role,
     users,
     voucher_codes,
+    warehouse,
 );
