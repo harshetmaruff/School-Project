@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { apiurl, getCurrency } from '../api';
+import { apiurl, getCurrency, removeCurrency } from '../api';
 import { useNavigate } from 'react-router';
 
 const ExchangeRateTable = () => {
@@ -9,8 +9,13 @@ const ExchangeRateTable = () => {
 
     const SetCurrency = async () => {
         const data = await getCurrency(navigate);
-        setCurrencyData(data)
-        console.log(data)
+        if (Array.isArray(data)) {
+            setCurrencyData(data)
+            console.log(data)
+        }
+        else {
+            console.log(data)
+        }
     }
 
     useEffect(() => {
@@ -21,7 +26,7 @@ const ExchangeRateTable = () => {
     <div className='flex-1 ml-4'>
         <div className='flex flex-row justify-between mt-4'>
             <h2 className='text-darkviolette font-bold text-2xl '>Exchange Rate</h2>
-            <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white'>Create</button>
+            <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={() => { navigate("/finance/exchange_rate/create") }}>Create</button>
         </div>
         <div className='mt-6 m-4'>
             <table className='w-full  table-auto'>
@@ -30,20 +35,11 @@ const ExchangeRateTable = () => {
                         <th className='text-left p-1'>Currency</th>
                         <th className='text-left p-1'>Symbol</th>
                         <th className='text-left p-1'>Name</th>
-                        <th className='text-left p-1'>Last Update</th>
-                        <th className='text-left p-1'>Current Rate</th>
-                        <th className='text-left p-1'>Active</th>
+                        {/* <th className='text-left p-1'>Current Rate</th> */}
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className='bg-bwhite'>
-                        <td className='p-2'>USD</td>
-                        <td className='p-2'>$</td>
-                        <td className='p-2'>United States Dollar</td>
-                        <td className='p-2'>18/01/2025</td>
-                        <td className='p-2'>0.012</td>
-                        <td className='p-2'>True</td>
-                    </tr>
                     { CurrencyData.map((item) => {
                         return(
                         <tr className='bg-bwhite' id={item.id}>
@@ -51,8 +47,27 @@ const ExchangeRateTable = () => {
                             <td className='p-2'>{ item.symbol }</td>
                             <td className='p-2'>{ item.currency_name }</td>
                             <td className='p-2'>{  }</td>
-                            <td className='p-2'>{  }</td>
-                            <td className='p-2'>{  }</td>
+                            { item.id !== 1 ? (
+                                <td className='p-2 text-green-500 font-bold text-right'>EDIT <span className='ml-8 text-red-500' onClick={() => { 
+                                    let data = {
+                                        id: item.id,
+                                        code: item.code,
+                                        rounding_factor: item.rounding_factor,
+                                        decimal_places: item.decimal_places,
+                                        symbol: item.symbol,
+                                        symbol_pos: item.symbol_pos,
+                                        currency_name: item.currency_name
+                                    }
+    
+                                    removeCurrency(data, navigate)
+                                    
+                                 }}>X</span></td>
+                            ) : (
+                                <>
+                                    <td></td>
+                                    <td></td>
+                                </>
+                            )}
                         </tr>
                         )
                     }) }
