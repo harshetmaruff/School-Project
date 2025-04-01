@@ -58,7 +58,7 @@ export const getCurrency = async (navigate) => {
 
         const data = await request.json().catch(() => ({}));
 
-        if (request.status == 401) {
+        if (request.status === 401) {
             console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
             navigate("/")
         }
@@ -72,8 +72,7 @@ export const getCurrency = async (navigate) => {
     }
 }
 
-export const postCurrency = async (Data) => {
-    const navigate = useNavigate();
+export const postCurrency = async (Data, navigate) => {
 
     const Method = {
         method: 'POST',
@@ -89,15 +88,13 @@ export const postCurrency = async (Data) => {
 
         const data = await request.json().catch(() => ({}));
 
-        if (request.status = 401) {
+        if (request.status === 401) {
             console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
             navigate("/");
         }
 
         if (request.ok) {
-            data.then(value => {
-                return value
-            })
+            return value
         }
     }
     catch (error) {
@@ -122,7 +119,7 @@ export const editCurrency = async (Data) => {
 
         const data = await request.json().catch(() => ({}));
 
-        if (request.status = 401) {
+        if (request.status === 401) {
             console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
             navigate("/");
         }
@@ -131,6 +128,159 @@ export const editCurrency = async (Data) => {
             data.then(value => {
                 return value
             })
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const removeCurrency = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const CurrencyRates = getExchangeRate(Data, navigate)
+
+        for(let i = 0; i < CurrencyRates.length; i++) {
+            removeExchangeRate(CurrencyRates[i])
+        }
+
+        const request = await fetch(apiurl + "/accounts/currency/remove", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return value;
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const getExchangeRate = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/get_exchange_rate", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return value;
+        }
+    }
+    catch (error) {
+        console.error("Network error: ", error.message)
+    }
+}
+
+export const postExchangeRate = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/exchange_rate", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const editExchangeRate = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/exchange_rate/edit", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            data.then(value => {
+                return value
+            })
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const removeExchangeRate = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/exchange_rate/remove", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return value;
         }
     }
     catch (error) {
