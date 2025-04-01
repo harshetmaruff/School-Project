@@ -48,7 +48,14 @@ const ExchangeRateTable = () => {
                             <td className='p-2'>{ item.currency_name }</td>
                             <td className='p-2'>{  }</td>
                             { item.id !== 1 ? (
-                                <td className='p-2 text-green-500 font-bold text-right'>EDIT <span className='ml-8 text-red-500' onClick={() => { 
+                                <td className='p-2 text-green-500 font-bold text-right'>
+                                <span 
+                                    onClick={() => {
+                                        navigate("/finance/exchange_rate/" + item.id + "/edit")
+                                    }}
+                                >EDIT</span> 
+                                
+                                <span className='ml-8 text-red-500' onClick={() => { 
                                     let data = {
                                         id: item.id,
                                         code: item.code,

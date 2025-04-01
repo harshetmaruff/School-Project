@@ -102,8 +102,7 @@ export const postCurrency = async (Data, navigate) => {
     }
 }
 
-export const editCurrency = async (Data) => {
-    const navigate = useNavigate()
+export const editCurrency = async (Data, navigate) => {
 
     const Method = {
         method: 'POST',
@@ -191,7 +190,7 @@ export const getExchangeRate = async (Data, navigate) => {
         }
 
         if (request.ok) {
-            return value;
+            return data;
         }
     }
     catch (error) {

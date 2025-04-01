@@ -25,6 +25,7 @@ import CreateDebitNote from './Pages/Finance/Create/CreateDebitNote.jsx';
 import CreateBank from './Pages/Finance/Create/CreateBank.jsx';
 import CreateExchangeRate from './Pages/Finance/Create/CreateExchangeRate.jsx';
 import POS from './Pages/POS/POS.jsx';
+import EditExchangeRate from './Pages/Finance/Edit/EditExchangeRate.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -50,6 +51,9 @@ createRoot(document.getElementById('root')).render(
           <Route path='/finance/debit_note/create' element={<CreateDebitNote />} />
           <Route path='/finance/bank/create' element={<CreateBank />}/>
           <Route path='/finance/exchange_rate/create' element={<CreateExchangeRate />} />
+
+          {/* Finance Edit Routes */}
+          <Route path='/finance/exchange_rate/:id/edit' element={<EditExchangeRate />}/>
 
           {/* eCommerce Routes */}
           <Route path='/ecommerce/' element={<Navigate to='/ecommerce/orders'/>} />
