@@ -164,7 +164,7 @@ pub fn remove_exchange_rate(arg: i32) -> serde_json::Value {
 
     let mut con = establish_connection();
 
-    match diesel::delete(exchange_rate.filter(id.eq(arg)))
+    match diesel::delete(exchange_rate.filter(id.eq(arg.id)))
         .execute(&mut con) {
             Ok(0) => json!({
                 "success": false,
