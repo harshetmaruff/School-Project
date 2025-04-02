@@ -160,7 +160,7 @@ const EditExchangeRate = () => {
 
     const SetData = async () => {
         let formvalues, currencies, Rates;
-
+        
         currencies = await getCurrency(navigate);
 
         for(let i = 0; i < currencies.length; i++) {
@@ -176,6 +176,9 @@ const EditExchangeRate = () => {
                 }
                 
                 Rates = await getExchangeRate(currencies[i], navigate)
+                if(!Array.isArray(Rates)) {
+                  Rates = [];
+                }
                 break;
             }
             else {
