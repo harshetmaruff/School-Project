@@ -6,6 +6,7 @@ use crate::models::LoginRequest;
 use crate::models::NewCurrency;
 use crate::models::NewExchangeRate;
 use crate::models::ExchangeRate;
+use crate::models::Partner;
 
 use crate::ops::accounts::exchange_rate::create_currency;
 use crate::ops::accounts::exchange_rate::create_exchange_rate;
@@ -15,7 +16,8 @@ use crate::ops::accounts::exchange_rate::edit_exchange_rate;
 use crate::ops::accounts::exchange_rate::list_currency;
 use crate::ops::accounts::exchange_rate::list_exchange_rate_of_currency;
 use crate::ops::accounts::exchange_rate::remove_exchange_rate;
-use crate::ops::teams::partner;
+use crate::ops::teams::partner::*;
+
 
 use crate::ops::userdata_handler::verify_user;
 
