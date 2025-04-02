@@ -3,3 +3,4 @@ pub mod userdata_handler;
 pub mod con;
 pub mod accounts;
 pub mod teams;
+pub mod inventory;
