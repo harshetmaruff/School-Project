@@ -1,7 +1,7 @@
 use actix_web::{get, post, web::{self, Data, Json, Path}, HttpResponse, Responder};
 use serde_json::json;
 
-use crate::{models::{BankAccount, Currency, NewBankAccount, NewPartner}, ops::{accounts::bank::{create_bank_account, delete_bank_account, edit_bank_account, list_bank_account}, teams::partner::{delete_partner, list_partner}}};
+use crate::{models::{Address, AddressType, BankAccount, Currency, NewAddress, NewAddressType, NewBankAccount, NewPartner}, ops::{accounts::bank::{create_bank_account, delete_bank_account, edit_bank_account, list_bank_account}, teams::partner::{delete_partner, list_partner}}};
 use crate::models::LoginRequest;
 use crate::models::NewCurrency;
 use crate::models::NewExchangeRate;
@@ -252,6 +252,117 @@ async fn partner_remove(req: actix_web::HttpRequest, data: web::Json<Partner>) -
         let token = auth_header.to_str().unwrap().replace("Bearer ", "");
         if verify_jwt(&token) {
             return HttpResponse::Ok().json(delete_partner(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+
+// Address Types API --------
+#[get("/teams/address/type")]
+async fn address_type_list(req: actix_web::HttpRequest) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(list_address_type());
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/teams/address/type")]
+async fn address_type_create(req: actix_web::HttpRequest, data: web::Json<NewAddressType>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_address_type(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+
+#[post("/teams/address/type/edit")]
+async fn address_type_edit(req: actix_web::HttpRequest, data: web::Json<AddressType>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(edit_address_type(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+
+#[post("/teams/address/type/remove")]
+async fn address_type_delete(req: actix_web::HttpRequest, data: web::Json<AddressType>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(delete_address_type(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+
+#[get("/teams/address")]
+async fn address_list(req: actix_web::HttpRequest) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(list_address());
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+
+#[post("/teams/address")]
+async fn address_create(req: actix_web::HttpRequest, data: web::Json<NewAddress>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_address(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+
+#[post("/teams/address/edit")]
+async fn address_edit(req: actix_web::HttpRequest, data: web::Json<Address>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(edit_address(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/teams/address/remove")]
+async fn address_remove(req: actix_web::HttpRequest, data: web::Json<Address>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(delete_address(data.into_inner()));
         }
     }
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))

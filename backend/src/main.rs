@@ -9,7 +9,7 @@ mod models;
 pub mod schema;
 
 mod services;
-use services::{create_bank, create_currency_, edit_bank, edit_currency_, edit_exchange_rate_, get_bank_list, get_currency, get_exchange_rate, login, partner_create, partner_edit, partner_list, partner_remove, post_exchange_rate, remove_bank, remove_currency, remove_exchange_rate_};
+use services::{address_create, address_edit, address_list, address_remove, address_type_create, address_type_delete, address_type_edit, address_type_list, create_bank, create_currency_, edit_bank, edit_currency_, edit_exchange_rate_, get_bank_list, get_currency, get_exchange_rate, login, partner_create, partner_edit, partner_list, partner_remove, post_exchange_rate, remove_bank, remove_currency, remove_exchange_rate_};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -41,7 +41,14 @@ async fn main() -> std::io::Result<()> {
             .service(partner_create)                    //                    /teams/partner                    POST
             .service(partner_edit)                      //                    /teams/partner/edit               POST
             .service(partner_remove)                    //                    /teams/partner/remove             POST
-            
+            .service(address_type_list)                 //                    /teams/address/type               GET
+            .service(address_type_create)               //                    /teams/address/type               POST
+            .service(address_type_edit)                 //                    /teams/address/type/edit          POST
+            .service(address_type_delete)               //                    /teams/address/type/remove        POST
+            .service(address_list)                      //                    /teams/address                    GET
+            .service(address_create)                    //                    /teams/address                    POST
+            .service(address_edit)                      //                    /teams/address/edit               POST
+            .service(address_remove)                    //                    /teams/address/remove             POST
     })
     .bind("127.0.0.1:8080")?
     .run()
