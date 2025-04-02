@@ -55,7 +55,7 @@ const ExchangeRateTable = () => {
                                     }}
                                 >EDIT</span> 
                                 
-                                <span className='ml-8 text-red-500' onClick={() => { 
+                                <span className='ml-8 text-red-500' onClick={async () => { 
                                     let data = {
                                         id: item.id,
                                         code: item.code,
@@ -66,8 +66,10 @@ const ExchangeRateTable = () => {
                                         currency_name: item.currency_name
                                     }
     
-                                    removeCurrency(data, navigate)
-                                    
+                                    let request = await removeCurrency(data, navigate)
+                                    if (request.success) {
+                                        navigate(0)
+                                    }
                                  }}>X</span></td>
                             ) : (
                                 <>

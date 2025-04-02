@@ -137,6 +137,8 @@ const CreateExchangeRate = () => {
 
         postExchangeRate(postData)
       }
+
+      navigate("/finance/exchange_rate")
     }
 
   return (
