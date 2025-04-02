@@ -145,10 +145,13 @@ export const removeCurrency = async (Data, navigate) => {
     }
 
     try {
-        const CurrencyRates = getExchangeRate(Data, navigate)
-
-        for(let i = 0; i < CurrencyRates.length; i++) {
-            removeExchangeRate(CurrencyRates[i])
+        const CurrencyRates = await getExchangeRate(Data, navigate)
+        
+        console.log(CurrencyRates)
+        if(CurrencyRates.length) {
+            for(let i = 0; i < CurrencyRates.length; i++) {
+                removeExchangeRate(CurrencyRates[i])
+            }
         }
 
         const request = await fetch(apiurl + "/accounts/currency/remove", Method)
@@ -161,7 +164,7 @@ export const removeCurrency = async (Data, navigate) => {
         }
 
         if (request.ok) {
-            return value;
+            return data;
         }
     }
     catch (error) {
@@ -279,10 +282,125 @@ export const removeExchangeRate = async (Data, navigate) => {
         }
 
         if (request.ok) {
-            return value;
+            return data;
         }
     }
     catch (error) {
         console.error("Network error:", error.message);
+    }
+}
+
+export const listBank = async (navigate) => {
+    const Method = {
+        method: 'GET',
+        headers: {
+           'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/bank", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data;
+        }
+    }
+    catch(error) {
+        console.error("Network error: ", error.message)
+    }
+}
+
+export const addBank = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/bank", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data;
+        }
+    }
+    catch(error) {
+        console.error("Network error: ", error.message)
+    }
+}
+
+export const editBank = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/bank/edit", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data;
+        }
+    }
+    catch(error) {
+        console.error("Network error: ", error.message)
+    }
+}
+
+export const removeBank = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/bank/remove", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data;
+        }
+    }
+    catch(error) {
+        console.error("Network error: ", error.message)
     }
 }
