@@ -1,7 +1,7 @@
 use actix_web::{get, post, web::{self, Data, Json, Path}, HttpResponse, Responder};
 use serde_json::json;
 
-use crate::{models::{BankAccount, Currency, NewBankAccount}, ops::{accounts::bank::{create_bank_account, delete_bank_account, edit_bank_account, list_bank_account}, teams::partner::list_partner}};
+use crate::{models::{BankAccount, Currency, NewBankAccount, NewPartner}, ops::{accounts::bank::{create_bank_account, delete_bank_account, edit_bank_account, list_bank_account}, teams::partner::{delete_partner, list_partner}}};
 use crate::models::LoginRequest;
 use crate::models::NewCurrency;
 use crate::models::NewExchangeRate;
@@ -203,7 +203,7 @@ async fn remove_bank(req: actix_web::HttpRequest, data: web::Json<BankAccount>) 
 }
 
 // Partner --------------------------------
-#[post("/partner")]
+#[get("/teams/partner")]
 async fn partner_list(req: actix_web::HttpRequest) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
@@ -211,6 +211,45 @@ async fn partner_list(req: actix_web::HttpRequest) -> impl Responder {
         let token = auth_header.to_str().unwrap().replace("Bearer ", "");
         if verify_jwt(&token) {
             return HttpResponse::Ok().json(list_partner());
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/teams/partner")]
+async fn partner_create(req: actix_web::HttpRequest, data: web::Json<NewPartner>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+    
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_partner(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/teams/partner/edit")]
+async fn partner_edit(req: actix_web::HttpRequest, data: web::Json<Partner>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(edit_partner(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/teams/partner/remove")]
+async fn partner_remove(req: actix_web::HttpRequest, data: web::Json<Partner>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(delete_partner(data.into_inner()));
         }
     }
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
