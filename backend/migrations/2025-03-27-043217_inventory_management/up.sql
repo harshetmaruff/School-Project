@@ -17,7 +17,7 @@ CREATE TABLE product (
 
 CREATE TABLE warehouse (
     id SERIAL PRIMARY KEY,
-    warehouse_name VARCHAR(100)
+    warehouse_name VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE inventory (

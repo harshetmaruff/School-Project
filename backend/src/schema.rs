@@ -288,7 +288,7 @@ diesel::table! {
     warehouse (id) {
         id -> Int4,
         #[max_length = 100]
-        warehouse_name -> Nullable<Varchar>,
+        warehouse_name -> Varchar,
     }
 }
 

@@ -339,3 +339,41 @@ pub struct NewProduct {
     pub img: Option<Vec<u8>>
 }
 
+// ---- Inventory Stocks ------------------------------------
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::inventory)]
+#[diesel(check_for_backend(Pg))]
+pub struct Inventory {
+    pub id: i32,
+    pub product_id: i32,
+    pub warehouse_id: i32,
+    pub quantity_available: Option<i32>,
+    pub minimum_stock_level: Option<i32>,
+    pub maximum_stock_level: i32
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::inventory)]
+pub struct NewInventory {
+    pub product_id: i32,
+    pub warehouse_id: i32,
+    pub quantity_available: Option<i32>,
+    pub minimum_stock_level: Option<i32>,
+    pub maximum_stock_level: i32
+}
+
+// ---- Warehouse -------------------------------------------
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::warehouse)]
+#[diesel(check_for_backend(Pg))]
+pub struct Warehouse {
+    pub id: i32,
+    pub warehouse_name: String
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::warehouse)]
+pub struct NewWarehouse {
+    pub warehouse_name: String
+}
