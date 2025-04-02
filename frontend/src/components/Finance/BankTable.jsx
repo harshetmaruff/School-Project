@@ -1,10 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
 import { useNavigate } from 'react-router'
+import { listBank, removeBank } from '../api';
 
 const BankTable = () => {
 
-    let navigate = useNavigate()
+    const [BankData, setBankData] = useState([]);
+    let navigate = useNavigate();
 
+    const getBankData = async () => {
+        const data = await listBank(navigate);
+        console.log(data);
+        if(Array.isArray(data)) {
+            setBankData(data);
+            console.log(data)
+        }
+    }
+
+    useEffect(() => {
+        getBankData()
+    }, [])
   return (
     <div className='flex-1 ml-4'>
         <div className='flex flex-row justify-between mt-4'>
@@ -21,11 +36,38 @@ const BankTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className='bg-bwhite'>
-                        <td className='p-2'>BE5009467</td>
-                        <td className='p-2'>State Bank of India</td>
-                        <td className='p-2'>SBININBBXX</td>
-                    </tr>
+                    { BankData.map((item) => {
+                        return(
+                        <tr className='bg-bwhite' id={ item.id }>
+                            <td className='p-2'>{ item.account_no }</td>
+                            <td className='p-2'>{ item.bank_name }</td>
+                            <td className='p-2'>{ item.bic }</td>
+                            <td className='p-2 text-green-500 font-bold text-right'>
+                                <span
+                                    onClick={async () => {
+                                        navigate("/finance/bank/" + item.id + "/edit")
+                                    }}
+                                >EDIT</span> 
+                                <span
+                                    onClick={async () => {
+                                        let data = {
+                                            id: item.id,
+                                            account_no: item.account_no,
+                                            bank_name: item.bank_name,
+                                            bic: item.bic
+                                        }
+
+                                        let request = await removeBank(data, navigate)
+                                        if (request.success) {
+                                            navigate(0);
+                                        }
+                                    }}
+                                    className='ml-8 text-red-500'
+                                >X</span>
+                            </td>
+                        </tr>
+                        )
+                    }) }
                 </tbody>
             </table>
         </div>

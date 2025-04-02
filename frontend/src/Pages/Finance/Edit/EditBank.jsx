@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../../../components/Sidebar'
 import Receipts from '../../../assets/MenuBarOptions/receipt.svg'
-import { useNavigate } from 'react-router'
-import { addBank } from '../../../components/api'
+import { useNavigate, useParams } from 'react-router'
+import { apiurl, editBank, listBank } from '../../../components/api'
 
-const CreateBank = () => {
+const EditBank = () => {
 
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const Link = [
@@ -68,10 +69,40 @@ const CreateBank = () => {
     ]
 
     const [formData, setformData] = useState({
+      id: id,
       account_no: '',
       bank_name: '',
       bic: ''
     })
+
+    const setData = async () => {
+        let bankvalues, formvalues;
+
+        bankvalues = await listBank(navigate)
+
+        for(let i = 0; i < bankvalues.length; i++) {
+            if(bankvalues[i].id == id) {
+                formvalues = {
+                    id: bankvalues[i].id,
+                    account_no: bankvalues[i].account_no,
+                    bank_name: bankvalues[i].bank_name,
+                    bic: bankvalues[i].bic
+                }
+                break;
+            }
+            else {
+                continue;
+            }
+        }
+
+        console.log(formvalues);
+
+        setformData(formvalues);
+    }
+
+    useEffect(() => {
+        setData()
+    },[apiurl])
 
     const handleInputChange = (e) => {
       const { name, value } = e.target;
@@ -82,10 +113,10 @@ const CreateBank = () => {
       });
     }
 
-    const createBankButton = async (formData, e) => {
+    const editBankButton = async (formData, e) => {
       e.preventDefault()
 
-      let httprequest = await addBank(formData, navigate)
+      let httprequest = await editBank(formData, navigate)
       console.log(httprequest)
 
       navigate("/finance/bank")
@@ -127,8 +158,8 @@ const CreateBank = () => {
 
                 <div className='flex flex-row '>
                     <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={(e) => {
-                      createBankButton(formData, e)
-                    }}>Create</button>
+                      editBankButton(formData, e)
+                    }}>Edit</button>
                     <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={(e) => {
                       e.preventDefault()
                       navigate("/finance/bank")
@@ -139,4 +170,4 @@ const CreateBank = () => {
     )
 }
 
-export default CreateBank
+export default EditBank
