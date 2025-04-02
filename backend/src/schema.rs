@@ -217,6 +217,8 @@ diesel::table! {
         product_category_id -> Int4,
         #[max_length = 100]
         product_description -> Nullable<Varchar>,
+        sellable -> Nullable<Bool>,
+        img -> Nullable<Bytea>,
     }
 }
 

@@ -10,7 +10,9 @@ CREATE TABLE product (
     bar_code VARCHAR(100) NOT NULL,
     product_name VARCHAR(100) NOT NULL,
     product_category_id INT NOT NULL,
-    product_description VARCHAR(100) DEFAULT NULL
+    product_description VARCHAR(100) DEFAULT NULL,
+    sellable BOOLEAN DEFAULT NULL,
+    img BYTEA DEFAULT NULL
 );
 
 CREATE TABLE warehouse (

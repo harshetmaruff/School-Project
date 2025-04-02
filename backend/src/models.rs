@@ -296,6 +296,7 @@ pub struct NewBankAccount {
 
 // --- Product -----------------------------------
 
+// -- Category ------------------
 #[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::product_category)]
 #[diesel(check_for_backend(Pg))]
@@ -303,3 +304,38 @@ pub struct ProductCategory {
     pub id: i32,
     pub category_name: String
 }
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::product_category)]
+pub struct NewCategory {
+    pub category_name: String
+}
+
+// -- Product
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::product)]
+#[diesel(check_for_backend(Pg))]
+pub struct Product {
+    pub id: i32,
+    pub product_code: String,
+    pub bar_code: String,
+    pub product_name: String,
+    pub product_category_id: i32,
+    pub product_description: Option<String>,
+    pub sellable: Option<bool>,
+    pub img: Option<Vec<u8>>
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::product)]
+pub struct NewProduct {
+    pub product_code: String,
+    pub bar_code: String,
+    pub product_name: String,
+    pub product_category_id: i32,
+    pub product_description: Option<String>,
+    pub sellable: Option<bool>,
+    pub img: Option<Vec<u8>>
+}
+

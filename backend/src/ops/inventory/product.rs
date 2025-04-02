@@ -1,8 +1,10 @@
 use crate::models::NewCategory;
 use crate::models::ProductCategory;
+use crate::models::Product;
+use crate::models::NewProduct;
 use crate::ops::con::establish_connection;
 use crate::schema::product_category;
-use crate::schema::product_category::category_name;
+use crate::schema::product;
 
 use diesel::query_dsl::methods::FilterDsl;
 use diesel::ExpressionMethods;
@@ -91,3 +93,86 @@ pub fn delete_product_category(arg: ProductCategory) -> serde_json::Value {
     }
 }
 
+pub fn list_product() -> serde_json::Value {
+    use crate::schema::product::dsl::*;
+
+    let mut con = establish_connection();
+
+    match product
+        .select(Product::as_select())
+        .load::<Product>(&mut con) {
+            Ok(data) if !data.is_empty() => json!(data),
+            Ok(_) => json!({}),
+            Err(err) => json!({"error": format!("Database error: {}", err)}),
+        }
+}
+
+pub fn create_product(arg: NewProduct) -> serde_json::Value {
+    let mut con = establish_connection();
+
+    match diesel::insert_into(product::table)
+        .values(&arg)
+        .execute(&mut con) {
+            Ok(rows_inserted) if rows_inserted > 0 => json!({
+                "success": true,
+                "message": "Product created successfully"
+            }),
+            Ok(_) =>json!({
+                "success": false,
+                "error": "No records were inserted"
+            }),
+            Err(err) => json!({
+                "success": false,
+                "error": format!("Database error: {}", err)
+            }),
+        }
+}
+
+pub fn edit_product(arg: Product) -> serde_json::Value {
+    use crate::schema::product::dsl::*;
+
+    let mut con = establish_connection();
+
+    match diesel::update(product.filter(id.eq(arg.id)))
+        .set((
+            product_code.eq(arg.product_code),
+            bar_code.eq(arg.bar_code),
+            product_name.eq(arg.product_name),
+            product_category_id.eq(arg.product_category_id),
+            product_description.eq(arg.product_description),
+            sellable.eq(arg.sellable),
+            img.eq(arg.img)
+        ))
+        .execute(&mut con)
+        {
+            Ok(0) => json!({ "success": false, "error": "Product not found" }),
+            Ok(_) => json!({ 
+                "success": true, 
+                "message": "Product updated successfully"
+            }),
+            Err(err) => json!({ "success": false, "error": format!("Database error: {}", err) }),
+        }
+}
+
+pub fn delete_product(arg: Product) -> serde_json::Value {
+    use crate::schema::product::dsl::*;
+
+    let mut con = establish_connection();
+
+    match diesel::delete(product.filter(id.eq(arg.id)))
+        .execute(&mut con)
+    {
+        Ok(0) => json!({
+            "success": false,
+            "error": "Product not found"
+        }),
+        Ok(_) => json!({
+            "success": true,
+            "message": "Product deleted successfully"
+        }),
+        Err(err) => json!({
+            "success": false,
+            "error": format!("Database error: {}", err)
+        })
+    }
+}
