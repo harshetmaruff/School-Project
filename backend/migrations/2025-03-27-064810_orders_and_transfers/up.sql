@@ -29,8 +29,8 @@ ALTER TABLE orders_details
 
 CREATE TABLE transfer (
     id SERIAL PRIMARY KEY,
-    product_id INT,
-    warehouse_id INT,
+    product_id INT NOT NULL,
+    warehouse_id INT NOT NULL,
     transfer_type TEXT CHECK (transfer_type IN ('Order', 'Delivery')) NOT NULL,
     quantity INT NOT NULL,
     sent_date DATE NOT NULL,
