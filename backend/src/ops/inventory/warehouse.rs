@@ -2,6 +2,7 @@ use crate::models::Warehouse;
 use crate::models::NewWarehouse;
 use crate::ops::con::establish_connection;
 use crate::schema::warehouse;
+use crate::schema::product_category;
 
 use diesel::query_dsl::methods::FilterDsl;
 use diesel::ExpressionMethods;
@@ -26,9 +27,11 @@ pub fn list_warehouse() -> serde_json::Value {
 }
 
 pub fn create_warehouse(arg: NewWarehouse) -> serde_json::Value {
+
+
     let mut con = establish_connection();
 
-    match diesel::insert_into(product_category::table)
+    match diesel::insert_into(warehouse::table)
         .values(&arg)
         .execute(&mut con) {
             Ok(rows_inserted) if rows_inserted > 0 => json!({

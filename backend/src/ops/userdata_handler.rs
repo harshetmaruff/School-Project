@@ -62,3 +62,19 @@ pub fn edit_user(user: User) {
         ))
         .execute(&mut con);
 }
+
+pub fn get_user_role(user_name: String) -> i32 {
+    use crate::schema::users::dsl::*;
+
+    let mut con = establish_connection();
+
+    match users
+        .filter(username.eq(&user_name)) // Exact match instead of `like`
+        .first::<User>(&mut con)
+        .optional()
+    {
+        Ok(Some(found_user)) => found_user.user_role_id.unwrap_or(0),
+        Ok(None) => return 0,  // User not found
+        Err(_) => 0,    // Database error
+    }
+}

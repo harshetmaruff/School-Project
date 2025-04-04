@@ -26,9 +26,11 @@ use crate::ops::userdata_handler::verify_user;
 async fn login(param: web::Json<LoginRequest>) -> impl Responder {
     use crate::ops::encrypt::create_jwt;    
 
-    if verify_user(param.into_inner()) {
-        let user_id = "12345"; // Simulated user ID (usually from DB)
-        let token = create_jwt(user_id);
+    let user_data = param.into_inner();
+    let username = user_data.username.clone();
+
+    if verify_user(user_data) {
+        let token = create_jwt(&username);
         HttpResponse::Ok().json(json!({ "token": token }))
     }
     else {

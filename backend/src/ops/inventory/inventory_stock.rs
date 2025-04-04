@@ -26,11 +26,11 @@ pub fn list_inventory(arg: Warehouse) -> serde_json::Value {
     }
 }
 
-pub fn create_inventory(arg: Inventory) -> serde_json::Value {
+pub fn create_inventory(arg: NewInventory) -> serde_json::Value {
     let mut con = establish_connection();
 
     match diesel::insert_into(inventory::table)
-        .values(arg)
+        .values(&arg)
         .execute(&mut con) {
             Ok(rows_inserted) if rows_inserted > 0 => json!({
                 "success": true,
@@ -50,6 +50,8 @@ pub fn create_inventory(arg: Inventory) -> serde_json::Value {
 pub fn edit_inventory(arg: Inventory) -> serde_json::Value {
     use crate::schema::inventory::dsl::*;
 
+    let mut con = establish_connection();
+
     match diesel::update(inventory.filter(id.eq(arg.id)))
         .set((
             product_id.eq(arg.product_id),
@@ -68,10 +70,12 @@ pub fn edit_inventory(arg: Inventory) -> serde_json::Value {
         }
 }
 
-pub fn remove_inventory() -> serde_json::Value {
+pub fn remove_inventory(arg: Inventory) -> serde_json::Value {
     use crate::schema::inventory::dsl::*;
 
-    match diesel::delete(inventory.filter(id.eq(arg)))
+    let mut con = establish_connection();
+
+    match diesel::delete(inventory.filter(id.eq(arg.id)))
         .execute(&mut con) {
             Ok(0) => json!({
                 "success": false,
