@@ -4,3 +4,4 @@ pub mod con;
 pub mod accounts;
 pub mod teams;
 pub mod inventory;
+pub mod purchase;

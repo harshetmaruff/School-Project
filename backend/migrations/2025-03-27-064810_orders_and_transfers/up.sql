@@ -1,8 +1,8 @@
 -- Your SQL goes here
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
-    provider_id INT,
-    warehouse_id INT,
+    provider_id INT NOT NULL,
+    warehouse_id INT NOT NULL,
     order_date DATE DEFAULT CURRENT_DATE,
     expected_date DATE DEFAULT NULL,
     actual_date DATE DEFAULT NULL
@@ -16,9 +16,9 @@ ALTER TABLE orders
 
 CREATE TABLE orders_details (
     id SERIAL PRIMARY KEY,
-    orders_id INT,
-    product_id INT,
-    order_quantity INT
+    orders_id INT NOT NULL,
+    product_id INT NOT NULL,
+    order_quantity INT NOT NULL
 );
 
 ALTER TABLE orders_details

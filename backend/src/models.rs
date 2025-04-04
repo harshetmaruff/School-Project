@@ -377,3 +377,44 @@ pub struct Warehouse {
 pub struct NewWarehouse {
     pub warehouse_name: String
 }
+
+// -- Orders -----------
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::orders)]
+#[diesel(check_for_backend(Pg))]
+pub struct Order {
+    pub id: i32,
+    pub provider_id: i32,
+    pub warehouse_id: i32,
+    pub order_date: Option<NaiveDate>,
+    pub expected_date: Option<NaiveDate>,
+    pub actual_date: Option<NaiveDate>
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::orders)]
+pub struct NewOrder {
+    pub provider_id: i32,
+    pub warehouse_id: i32,
+    pub order_date: Option<NaiveDate>,
+    pub expected_date: Option<NaiveDate>,
+    pub actual_date: Option<NaiveDate>
+}
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::orders_details)]
+#[diesel(check_for_backend(Pg))]
+pub struct OrderDetail {
+    pub id: i32,
+    pub orders_id: i32,
+    pub product_id: i32,
+    pub order_quantity: i32
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::orders_details)]
+pub struct NewOrderDetail {
+    pub orders_id: i32,
+    pub product_id: i32,
+    pub order_quantity: i32
+}

@@ -171,10 +171,20 @@ diesel::table! {
 }
 
 diesel::table! {
+    online_sales (id) {
+        id -> Int4,
+        user_id -> Int4,
+        sales_date -> Nullable<Date>,
+        product_id -> Int4,
+        delivered -> Bool,
+    }
+}
+
+diesel::table! {
     orders (id) {
         id -> Int4,
-        provider_id -> Nullable<Int4>,
-        warehouse_id -> Nullable<Int4>,
+        provider_id -> Int4,
+        warehouse_id -> Int4,
         order_date -> Nullable<Date>,
         expected_date -> Nullable<Date>,
         actual_date -> Nullable<Date>,
@@ -184,9 +194,9 @@ diesel::table! {
 diesel::table! {
     orders_details (id) {
         id -> Int4,
-        orders_id -> Nullable<Int4>,
-        product_id -> Nullable<Int4>,
-        order_quantity -> Nullable<Int4>,
+        orders_id -> Int4,
+        product_id -> Int4,
+        order_quantity -> Int4,
     }
 }
 
@@ -227,6 +237,41 @@ diesel::table! {
         id -> Int4,
         #[max_length = 100]
         category_name -> Varchar,
+    }
+}
+
+diesel::table! {
+    receipt (id) {
+        id -> Int4,
+        customer_id -> Int4,
+        receipt_date -> Date,
+        receipt_amount -> Nullable<Numeric>,
+    }
+}
+
+diesel::table! {
+    receipt_items (id) {
+        id -> Int4,
+        receipt_id -> Int4,
+        product_id -> Int4,
+    }
+}
+
+diesel::table! {
+    shop (id) {
+        id -> Int4,
+        #[max_length = 100]
+        shop_name -> Varchar,
+        warehouse_id -> Int4,
+    }
+}
+
+diesel::table! {
+    shop_session (id) {
+        id -> Int4,
+        shop_id -> Int4,
+        session_date -> Nullable<Date>,
+        user_id -> Int4,
     }
 }
 
@@ -303,11 +348,17 @@ diesel::joinable!(journal -> ledger (ledger_id));
 diesel::joinable!(journal -> partner (partner_id));
 diesel::joinable!(journal -> transaction_type (transaction_type_id));
 diesel::joinable!(ledger -> coa_master (coa_id));
+diesel::joinable!(online_sales -> product (product_id));
+diesel::joinable!(online_sales -> users (user_id));
 diesel::joinable!(orders -> partner (provider_id));
 diesel::joinable!(orders -> warehouse (warehouse_id));
 diesel::joinable!(orders_details -> orders (orders_id));
 diesel::joinable!(orders_details -> product (product_id));
 diesel::joinable!(product -> product_category (product_category_id));
+diesel::joinable!(receipt -> partner (customer_id));
+diesel::joinable!(shop -> warehouse (warehouse_id));
+diesel::joinable!(shop_session -> shop (shop_id));
+diesel::joinable!(shop_session -> users (user_id));
 diesel::joinable!(transfer -> product (product_id));
 diesel::joinable!(users -> user_role (user_role_id));
 
@@ -324,11 +375,16 @@ diesel::allow_tables_to_appear_in_same_query!(
     inventory,
     journal,
     ledger,
+    online_sales,
     orders,
     orders_details,
     partner,
     product,
     product_category,
+    receipt,
+    receipt_items,
+    shop,
+    shop_session,
     transaction_type,
     transfer,
     user_role,
