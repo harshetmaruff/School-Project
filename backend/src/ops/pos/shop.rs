@@ -66,7 +66,7 @@ pub fn edit_shop(arg: Shop) -> serde_json::Value {
         }
 }
 
-pub fn delete_shop(arg: Order) -> serde_json::Value {
+pub fn delete_shop(arg: Shop) -> serde_json::Value {
     use crate::schema::orders::dsl::*;
 
     let mut con = establish_connection();
@@ -95,7 +95,7 @@ pub fn list_session_by_shop(arg: i32) -> serde_json::Value {
 
     match shop_session
         .select(ShopSession::as_select())
-        .filter(provider_id.eq(arg))
+        .filter(shop_id.eq(arg))
         .load::<ShopSession>(&mut con)
     {
         Ok(rates) if !rates.is_empty() => json!(rates),
@@ -105,6 +105,7 @@ pub fn list_session_by_shop(arg: i32) -> serde_json::Value {
 }
 
 pub fn create_shop_session(arg: NewShopSession) -> serde_json::Value {
+
     let mut con = establish_connection();
 
     match diesel::insert_into(shop_session::table)

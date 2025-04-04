@@ -510,7 +510,7 @@ pub struct ShopSession {
 }
 
 #[derive(Insertable, Serialize, Deserialize)]
-#[diesel(table_name = shop_session)]
+#[diesel(table_name = crate::schema::shop_session)]
 pub struct NewShopSession {
     pub shop_id: i32,
     pub session_date: Option<NaiveDate>,
