@@ -28,7 +28,7 @@ pub fn list_transfer_by_warehouse(arg: i32) -> serde_json::Value {
     use crate::schema::transfer::dsl::*;
     let mut con = establish_connection();
 
-    match exchange_rate
+    match transfer
         .select(Transfer::as_select())
         .filter(warehouse_id.eq(arg))
         .load::<Transfer>(&mut con)
