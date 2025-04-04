@@ -1,8 +1,8 @@
 -- Your SQL goes here
 CREATE TABLE delivery (
     id SERIAL PRIMARY KEY,
-    customer_id INT,
-    warehouse_id INT,
+    customer_id INT NOT NULL,
+    warehouse_id INT NOT NULL,
     sales_date DATE DEFAULT CURRENT_DATE,
     expected_date DATE DEFAULT NULL,
     actual_date DATE DEFAULT NULL
@@ -16,10 +16,13 @@ ALTER TABLE delivery
 
 CREATE TABLE delivery_details (
     id SERIAL PRIMARY KEY,
-    delivery_id INT,
-    product_id INT,
-    product_quantity INT
+    delivery_id INT NOT NULL,
+    product_id INT NOT NULL,
+    product_quantity INT NOT NULL
 );
 
 ALTER TABLE delivery_details
     ADD CONSTRAINT fk_details_delivery FOREIGN KEY (delivery_id) REFERENCES delivery(id) ON DELETE SET NULL;
+
+ALTER TABLE delivery_details
+    ADD CONSTRAINT fk_details_product FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE SET NULL;

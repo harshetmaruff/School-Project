@@ -418,3 +418,68 @@ pub struct NewOrderDetail {
     pub product_id: i32,
     pub order_quantity: i32
 }
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::transfer)]
+#[diesel(check_for_backend(Pg))]
+
+pub struct Transfer {
+    pub id: i32,
+    pub product_id: i32,
+    pub warehouse_id: i32,
+    pub transfer_type: String,  // "Order" or "Delivery"
+    pub quantity: i32,
+    pub sent_date: NaiveDate,
+    pub received_date: Option<NaiveDate>,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::transfer)]
+pub struct NewTransfer {
+    pub product_id: i32,
+    pub warehouse_id: i32,
+    pub transfer_type: String,  // "Order" or "Delivery"
+    pub quantity: i32,
+    pub sent_date: NaiveDate,
+    pub received_date: Option<NaiveDate>,
+}
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::delivery)]
+#[diesel(check_for_backend(Pg))]
+pub struct Delivery {
+    pub id: i32,
+    pub customer_id: i32,
+    pub warehouse_id: i32,
+    pub sales_date: Option<NaiveDate>,
+    pub expected_date: Option<NaiveDate>,
+    pub actual_date: Option<NaiveDate>,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::delivery)]
+pub struct NewDelivery {
+    pub customer_id: i32,
+    pub warehouse_id: i32,
+    pub sales_date: Option<NaiveDate>,
+    pub expected_date: Option<NaiveDate>,
+    pub actual_date: Option<NaiveDate>,
+}
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::delivery_details)]
+#[diesel(check_for_backend(Pg))]
+pub struct DeliveryDetail {
+    pub id: i32,
+    pub delivery_id: i32,
+    pub product_id: i32,
+    pub product_quantity: i32,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::delivery_details)]
+pub struct NewDeliveryDetail {
+    pub delivery_id: i32,
+    pub product_id: i32,
+    pub product_quantity: i32,
+}
