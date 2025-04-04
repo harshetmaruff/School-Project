@@ -1,5 +1,5 @@
-use crate::schema::{ orders, orders_details };
-use crate::models::{ Order, NewOrder, OrderDetail, NewOrderDetail };
+use crate::schema::orders;
+use crate::models::{ Order, NewOrder};
 use crate::ops::con::establish_connection;
 
 use diesel::query_dsl::methods::FilterDsl;
@@ -22,6 +22,21 @@ pub fn list_orders() -> serde_json::Value {
             Ok(_) => json!({}),
             Err(err) => json!({"error": format!("Database error: {}", err)}),
         }
+}
+
+pub fn list_order_by_provider(provider_no: i32) -> serde_json::Value {
+    use crate::schema::orders::dsl::*;
+    let mut con = establish_connection();
+
+    match orders
+        .select(Order::as_select())
+        .filter(provider_id.eq(provider_no))
+        .load::<Order>(&mut con)
+    {
+        Ok(rates) if !rates.is_empty() => json!(rates),
+        Ok(_) => json!({}),
+        Err(err) => json!({"error": format!("Database error: {}", err)}),
+    }
 }
 
 pub fn create_order(arg: NewOrder) -> serde_json::Value {

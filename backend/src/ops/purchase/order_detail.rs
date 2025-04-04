@@ -1,4 +1,4 @@
-use crate::schema::{order_details, orders_details};
+use crate::schema::orders_details;
 use crate::models::{ OrderDetail, NewOrderDetail };
 use crate::ops::con::establish_connection;
 use crate::schema::orders::provider_id;
@@ -11,11 +11,11 @@ use diesel::query_dsl::methods::SelectDsl;
 use diesel::SelectableHelper;
 use serde_json::json;
 
-pub fn list_order_details_by_order(order_no: i32) {
+pub fn list_order_details_by_order(order_no: i32) -> serde_json::Value {
     use crate::schema::orders_details::dsl::*;
     let mut con = establish_connection();
 
-    match order_details
+    match orders_details
         .select(OrderDetail::as_select())
         .filter(orders_id.eq(order_no))
         .load::<OrderDetail>(&mut con)
@@ -26,7 +26,7 @@ pub fn list_order_details_by_order(order_no: i32) {
     }
 }
 
-pub fn create_order_details(arg: NewOrderDetail) {
+pub fn create_order_details(arg: NewOrderDetail) -> serde_json::Value {
     let mut con = establish_connection();
 
     match diesel::insert_into(orders_details::table)
@@ -47,8 +47,8 @@ pub fn create_order_details(arg: NewOrderDetail) {
         }
 }
 
-pub fn delete_order_details(arg: OrderDetail) {
-    use crate::schema::orders::dsl::*;
+pub fn delete_order_details(arg: OrderDetail) -> serde_json::Value {
+    use crate::schema::orders_details::dsl::*;
 
     let mut con = establish_connection();
 
