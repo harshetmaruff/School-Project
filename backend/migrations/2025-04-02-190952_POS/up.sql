@@ -11,7 +11,7 @@ ALTER TABLE shop
 CREATE TABLE shop_session (
     id SERIAL PRIMARY KEY,
     shop_id INT NOT NULL,
-    session_date DATE,
+    session_date DATE DEFAULT CURRENT_DATE,
     user_id INT NOT NULL
 );
 
@@ -23,6 +23,7 @@ ALTER TABLE shop_session
 
 CREATE TABLE receipt (
     id SERIAL PRIMARY KEY,
+    cashier_id INT NOT NULL,
     customer_id INT NOT NULL,
     receipt_date DATE NOT NULL,
     receipt_amount DECIMAL(15, 2)
@@ -31,8 +32,12 @@ CREATE TABLE receipt (
 ALTER TABLE receipt
     ADD CONSTRAINT fk_receipt_partner FOREIGN KEY (customer_id) REFERENCES partner(id);
 
+ALTER TABLE receipt
+    ADD CONSTRAINT fk_receipt_cashier_user FOREIGN KEY (cashier_id) REFERENCES users(id);
+
 CREATE TABLE receipt_items (
     id SERIAL PRIMARY KEY,
     receipt_id INT NOT NULL,
-    product_id INT NOT NULL
+    product_id INT NOT NULL,
+    quantity INT NOT NULL
 )

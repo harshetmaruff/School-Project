@@ -483,3 +483,36 @@ pub struct NewDeliveryDetail {
     pub product_id: i32,
     pub product_quantity: i32,
 }
+
+#[derive(Queryable, Selectable, AsChangeset, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::shop)]
+#[diesel(check_for_backend(Pg))]
+pub struct Shop {
+    pub id: i32,
+    pub shop_name: String,
+    pub warehouse_id: i32,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::shop)]
+pub struct NewShop {
+    pub shop_name: String,
+    pub warehouse_id: i32,
+}
+
+#[derive(Queryable, Selectable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::shop_session)]
+pub struct ShopSession {
+    pub id: i32,
+    pub shop_id: i32,
+    pub session_date: Option<NaiveDate>,
+    pub user_id: i32,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = shop_session)]
+pub struct NewShopSession {
+    pub shop_id: i32,
+    pub session_date: Option<NaiveDate>,
+    pub user_id: i32,
+}
