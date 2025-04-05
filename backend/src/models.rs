@@ -502,6 +502,7 @@ pub struct NewShop {
 
 #[derive(Queryable, Selectable, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::shop_session)]
+#[diesel(check_for_backend(Pg))]
 pub struct ShopSession {
     pub id: i32,
     pub shop_id: i32,
@@ -515,4 +516,62 @@ pub struct NewShopSession {
     pub shop_id: i32,
     pub session_date: Option<NaiveDate>,
     pub user_id: i32,
+}
+
+#[derive(Queryable, Selectable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::receipt)]
+#[diesel(check_for_backend(Pg))]
+pub struct Receipt {
+    pub id: i32,
+    pub cashier_id: i32,
+    pub customer_id: i32,
+    pub receipt_date: NaiveDate,
+    pub receipt_amount: Option<BigDecimal>,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::receipt)]
+pub struct NewReceipt {
+    pub cashier_id: i32,
+    pub customer_id: i32,
+    pub receipt_date: NaiveDate,
+    pub receipt_amount: Option<BigDecimal>,
+}
+
+#[derive(Queryable, Selectable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::receipt_items)]
+#[diesel(check_for_backend(Pg))]
+pub struct ReceiptItem {
+    pub id: i32,
+    pub receipt_id: i32,
+    pub product_id: i32,
+    pub quantity: i32,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::receipt_items)]
+pub struct NewReceiptItem {
+    pub receipt_id: i32,
+    pub product_id: i32,
+    pub quantity: i32,
+}
+
+#[derive(Queryable, Selectable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::online_sales)]
+#[diesel(check_for_backend(Pg))]
+pub struct OnlineSale {
+    pub id: i32,
+    pub user_id: i32,
+    pub sales_date: Option<NaiveDate>,
+    pub product_id: i32,
+    pub delivered: bool,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::online_sales)]
+pub struct NewOnlineSale {
+    pub user_id: i32,
+    pub sales_date: Option<NaiveDate>, // Optional to allow default
+    pub product_id: i32,
+    pub delivered: Option<bool>, // Optional to allow default
 }

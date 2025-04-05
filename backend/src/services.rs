@@ -1,7 +1,7 @@
 use actix_web::{get, post, web::{self, Data, Json, Path}, HttpResponse, Responder};
 use serde_json::json;
 
-use crate::{models::{Address, AddressType, BankAccount, Currency, NewAddress, NewAddressType, NewBankAccount, NewPartner}, ops::{accounts::bank::{create_bank_account, delete_bank_account, edit_bank_account, list_bank_account}, teams::partner::{delete_partner, list_partner}}};
+use crate::{models::{Address, AddressType, BankAccount, Currency, NewAddress, NewAddressType, NewBankAccount, NewCategory, NewPartner, NewProduct, Product, ProductCategory}, ops::{accounts::bank::{create_bank_account, delete_bank_account, edit_bank_account, list_bank_account}, inventory::product::{create_product, create_product_category, delete_product_category, edit_product, list_product}, teams::partner::{delete_partner, list_partner}}};
 use crate::models::LoginRequest;
 use crate::models::NewCurrency;
 use crate::models::NewExchangeRate;
@@ -16,6 +16,7 @@ use crate::ops::accounts::exchange_rate::edit_exchange_rate;
 use crate::ops::accounts::exchange_rate::list_currency;
 use crate::ops::accounts::exchange_rate::list_exchange_rate_of_currency;
 use crate::ops::accounts::exchange_rate::remove_exchange_rate;
+use crate::ops::inventory::product::*;
 use crate::ops::teams::partner::*;
 
 
@@ -369,3 +370,112 @@ async fn address_remove(req: actix_web::HttpRequest, data: web::Json<Address>) -
     }
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
 }
+
+// -------- Inventory ------------------------
+
+// -- Product Category
+#[get("/inventory/product/category")]
+async fn product_category_list(req: actix_web::HttpRequest) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(list_product_category());
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/inventory/product/category")]
+async fn product_category_create(req: actix_web::HttpRequest, data: web::Json<NewCategory>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_product_category(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/inventory/product/category/edit")]
+async fn product_category_edit(req: actix_web::HttpRequest, data: web::Json<ProductCategory>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(edit_product_category(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/inventory/product/category/remove")]
+async fn product_category_remove(req: actix_web::HttpRequest, data: web::Json<ProductCategory>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(delete_product_category(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+// -- Product
+#[get("/inventory/product")]
+async fn product_list(req: actix_web::HttpRequest) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(list_product());
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/inventory/product")]
+async fn product_create(req: actix_web::HttpRequest, data: web::Json<NewProduct>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_product(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/inventory/product/edit")]
+async fn product_edit(req: actix_web::HttpRequest, data: web::Json<Product>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(edit_product(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/inventory/product/remove")]
+async fn product_remove(req: actix_web::HttpRequest, data: web::Json<Product>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(edit_product(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+

@@ -40,4 +40,4 @@ CREATE TABLE receipt_items (
     receipt_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT NOT NULL
-)
+);

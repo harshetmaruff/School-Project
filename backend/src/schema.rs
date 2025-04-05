@@ -76,8 +76,8 @@ diesel::table! {
 diesel::table! {
     delivery (id) {
         id -> Int4,
-        customer_id -> Nullable<Int4>,
-        warehouse_id -> Nullable<Int4>,
+        customer_id -> Int4,
+        warehouse_id -> Int4,
         sales_date -> Nullable<Date>,
         expected_date -> Nullable<Date>,
         actual_date -> Nullable<Date>,
@@ -87,9 +87,9 @@ diesel::table! {
 diesel::table! {
     delivery_details (id) {
         id -> Int4,
-        delivery_id -> Nullable<Int4>,
-        product_id -> Nullable<Int4>,
-        product_quantity -> Nullable<Int4>,
+        delivery_id -> Int4,
+        product_id -> Int4,
+        product_quantity -> Int4,
     }
 }
 
@@ -243,6 +243,7 @@ diesel::table! {
 diesel::table! {
     receipt (id) {
         id -> Int4,
+        cashier_id -> Int4,
         customer_id -> Int4,
         receipt_date -> Date,
         receipt_amount -> Nullable<Numeric>,
@@ -254,6 +255,7 @@ diesel::table! {
         id -> Int4,
         receipt_id -> Int4,
         product_id -> Int4,
+        quantity -> Int4,
     }
 }
 
@@ -289,8 +291,8 @@ diesel::table! {
 diesel::table! {
     transfer (id) {
         id -> Int4,
-        product_id -> Nullable<Int4>,
-        warehouse_id -> Nullable<Int4>,
+        product_id -> Int4,
+        warehouse_id -> Int4,
         transfer_type -> Text,
         quantity -> Int4,
         sent_date -> Date,
@@ -342,6 +344,7 @@ diesel::joinable!(address -> partner (partner_id));
 diesel::joinable!(delivery -> partner (customer_id));
 diesel::joinable!(delivery -> warehouse (warehouse_id));
 diesel::joinable!(delivery_details -> delivery (delivery_id));
+diesel::joinable!(delivery_details -> product (product_id));
 diesel::joinable!(inventory -> product (product_id));
 diesel::joinable!(inventory -> warehouse (warehouse_id));
 diesel::joinable!(journal -> ledger (ledger_id));
@@ -356,6 +359,7 @@ diesel::joinable!(orders_details -> orders (orders_id));
 diesel::joinable!(orders_details -> product (product_id));
 diesel::joinable!(product -> product_category (product_category_id));
 diesel::joinable!(receipt -> partner (customer_id));
+diesel::joinable!(receipt -> users (cashier_id));
 diesel::joinable!(shop -> warehouse (warehouse_id));
 diesel::joinable!(shop_session -> shop (shop_id));
 diesel::joinable!(shop_session -> users (user_id));
