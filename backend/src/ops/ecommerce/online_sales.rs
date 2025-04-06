@@ -37,7 +37,7 @@ pub fn list_online_sales_by_user(user_no: i32) -> serde_json::Value {
     }
 }
 
-pub fn create_online_sale(arg: NewOnlineSale) -> serde_json::Value {
+pub fn create_online_sales(arg: NewOnlineSale) -> serde_json::Value {
     let mut con = establish_connection();
 
     match diesel::insert_into(online_sales::table)
@@ -58,7 +58,7 @@ pub fn create_online_sale(arg: NewOnlineSale) -> serde_json::Value {
         }
 }
 
-pub fn update_online_sale(arg: OnlineSale) -> serde_json::Value {
+pub fn update_online_sales(arg: OnlineSale) -> serde_json::Value {
     use crate::schema::online_sales::dsl::*;
 
     let mut con = establish_connection();
@@ -81,7 +81,7 @@ pub fn update_online_sale(arg: OnlineSale) -> serde_json::Value {
         }
 }
 
-pub fn delete_online_sale(arg: OnlineSale) -> serde_json::Value {
+pub fn delete_online_sales(arg: OnlineSale) -> serde_json::Value {
     use crate::schema::online_sales::dsl::*;
 
     let mut con = establish_connection();

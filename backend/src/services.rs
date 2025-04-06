@@ -1,7 +1,7 @@
 use actix_web::{get, post, web::{self, Data, Json, Path}, HttpResponse, Responder};
 use serde_json::json;
 
-use crate::{models::{Address, AddressType, BankAccount, Currency, NewAddress, NewAddressType, NewBankAccount, NewCategory, NewPartner, NewProduct, NewWarehouse, Product, ProductCategory}, ops::{accounts::bank::{create_bank_account, delete_bank_account, edit_bank_account, list_bank_account}, inventory::product::{create_product, create_product_category, delete_product_category, edit_product, list_product}, teams::partner::{delete_partner, list_partner}}};
+use crate::{models::{Address, AddressType, BankAccount, Currency, NewAddress, NewAddressType, NewBankAccount, NewCategory, NewPartner, NewProduct, NewWarehouse, Product, ProductCategory}, ops::{accounts::bank::{create_bank_account, delete_bank_account, edit_bank_account, list_bank_account}, ecommerce::online_sales::create_online_sales, inventory::product::{create_product, create_product_category, delete_product_category, edit_product, list_product}, teams::partner::{delete_partner, list_partner}}};
 use crate::models::*;
 
 use crate::ops::accounts::exchange_rate::*;
@@ -13,6 +13,9 @@ use crate::ops::teams::partner::*;
 use crate::ops::purchase::orders::*;
 use crate::ops::purchase::order_detail::*;
 use crate::ops::purchase::transfer::*;
+use crate::ops::pos::receipt::*;
+use crate::ops::pos::shop::*;
+use crate::ops::ecommerce::online_sales::*;
 
 
 use crate::ops::userdata_handler::verify_user;
@@ -1079,7 +1082,7 @@ async fn receipt_item_remove(req: actix_web::HttpRequest, data: web::Json<Receip
 // E commerce 
 // -- Online Sales
 #[get("/ecommerce/online-sale")]
-async fn online_sale_list(req: HttpRequest) -> impl Responder {
+async fn online_sale_list(req: actix_web::HttpRequest) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
     if let Some(auth) = req.headers().get("Authorization") {
@@ -1092,7 +1095,7 @@ async fn online_sale_list(req: HttpRequest) -> impl Responder {
 }
 
 #[post("/ecommerce/online-sale/list/by_user")]
-async fn online_sale_list_by_user(req: HttpRequest, data: web::Json<User>) -> impl Responder {
+async fn online_sale_list_by_user(req: actix_web::HttpRequest, data: web::Json<User>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
     if let Some(auth) = req.headers().get("Authorization") {
@@ -1105,39 +1108,39 @@ async fn online_sale_list_by_user(req: HttpRequest, data: web::Json<User>) -> im
 }
 
 #[post("ecommerce/online-sale/create")]
-async fn online_sale_create(req: HttpRequest, data: web::Json<NewOnlineSale>) -> impl Responder {
+async fn online_sale_create(req: actix_web::HttpRequest, data: web::Json<NewOnlineSale>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
     if let Some(auth) = req.headers().get("Authorization") {
         let token = auth.to_str().unwrap_or("").replace("Bearer ", "");
         if verify_jwt(&token) {
-            return HttpResponse::Ok().json(create_online_sale(data.into_inner()));
+            return HttpResponse::Ok().json(create_online_sales(data.into_inner()));
         }
     }
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
 }
 
 #[post("ecommerce/online-sale/edit")]
-async fn online_sale_edit(req: HttpRequest, data: web::Json<OnlineSale>) -> impl Responder {
+async fn online_sale_edit(req: actix_web::HttpRequest, data: web::Json<OnlineSale>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
     if let Some(auth) = req.headers().get("Authorization") {
         let token = auth.to_str().unwrap_or("").replace("Bearer ", "");
         if verify_jwt(&token) {
-            return HttpResponse::Ok().json(update_online_sale(data.into_inner()));
+            return HttpResponse::Ok().json(update_online_sales(data.into_inner()));
         }
     }
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
 }
 
 #[post("ecommerce/online-sale/remove")]
-async fn online_sale_remove(req: HttpRequest, data: web::Json<OnlineSale>) -> impl Responder {
+async fn online_sale_remove(req: actix_web::HttpRequest, data: web::Json<OnlineSale>) -> impl Responder {
     use crate::ops::encrypt::verify_jwt;
 
     if let Some(auth) = req.headers().get("Authorization") {
         let token = auth.to_str().unwrap_or("").replace("Bearer ", "");
         if verify_jwt(&token) {
-            return HttpResponse::Ok().json(delete_online_sale(data.into_inner()));
+            return HttpResponse::Ok().json(delete_online_sales(data.into_inner()));
         }
     }
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))

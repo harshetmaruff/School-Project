@@ -6,3 +6,4 @@ pub mod teams;
 pub mod inventory;
 pub mod purchase;
 pub mod pos;
+pub mod ecommerce;
