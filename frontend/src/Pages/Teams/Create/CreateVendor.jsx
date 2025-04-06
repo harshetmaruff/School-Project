@@ -15,6 +15,13 @@ const CreateVendor = () => {
       logo: Receipts,
       link: "/teams/vendor",
       selected: true
+    },
+    {
+        id: 2,
+        name: "Customer",
+        logo: Receipts,
+        link: "/teams/customer",
+        selected: false
     }
   ]
 

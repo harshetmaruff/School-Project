@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../../../components/Sidebar'
-import { useNavigate, useParams } from 'react-router'
 import Receipts from '../../../assets/MenuBarOptions/receipt.svg'
-import { createAddress, createPartner, editAddress, editPartner, getAddress, getAddressType, getPartner } from '../../../components/api'
+import { useNavigate } from 'react-router'
+import { createAddress, createPartner, getAddressType, getPartner } from '../../../components/api'
 
-const EditVendor = () => {
+const CreateCustomer = () => {
 
   const navigate = useNavigate()
 
@@ -23,9 +23,7 @@ const EditVendor = () => {
         link: "/teams/customer",
         selected: false
     }
-    ]
-
-  const { id } = useParams();
+  ]
 
   const [AddressType, SetAddressType] = useState([]);
 
@@ -42,59 +40,10 @@ const EditVendor = () => {
 
   const setAddressType = async () => {
     let request = await getAddressType(navigate);
+
+
     console.log(request)
     SetAddressType(request)
-
-    request = await getPartner(navigate);
-    let partnerdata, addressdata;
-
-
-    for (let i = 0; i < request.length; i++) {
-      if (request[i].id == id) {
-        partnerdata = request[i];
-        console.log(partnerdata)
-        setFormData({
-          ...formData,
-          id: partnerdata.id,
-          vendor_name: partnerdata.name,
-          pan_number: partnerdata.pan_number,
-          gst_number: partnerdata.gst_number,
-        })
-        console.log(formData)
-        break;
-      }
-    }
-
-    request = await getAddress(navigate);
-    for (let i = 0; i < request.length; i++) {
-      if (request[i].partner_id == id) {
-        addressdata = request[i];
-        setFormData({
-          ...formData,
-          address_id: addressdata.id,
-          address_type: addressdata.address_type,
-          address_line: addressdata.address_line,
-          city: addressdata.city,
-          state: addressdata.state_name,
-          postal_code: addressdata.postal_code
-        })
-        break;
-      }
-    }
-
-
-    setFormData({
-      id: partnerdata.id,
-      vendor_name: partnerdata.name,
-      pan_number: partnerdata.pan_number,
-      gst_number: partnerdata.gst_number,
-      address_id: addressdata.id,
-      address_type: addressdata.address_type_id,
-      address_line: addressdata.address_line,
-      city: addressdata.city,
-      state: addressdata.state_name,
-      postal_code: addressdata.postal_code
-    })
   }
 
   useEffect(() => {
@@ -109,13 +58,11 @@ const EditVendor = () => {
     })
   }
 
-  const editVendorButton = async (formData, e) => {
-    console.log(formData)
+  const createVendorButton = async (formData, e) => {
     e.preventDefault()
-    let request = await editPartner({
-        id:   formData.id,
+    let request = await createPartner({
         name: formData.vendor_name,
-        partner_type: "Supplier",
+        partner_type: "Customer",
         gst_number: formData.gst_number,
         pan_number: formData.pan_number
     }, navigate);
@@ -126,8 +73,7 @@ const EditVendor = () => {
     let data = request.at(-1)
     console.log(data)
 
-    request = await editAddress({
-        id: formData.address_id,
+    request = await createAddress({
         partner_id: data.id,
         address_type_id: parseInt(formData.address_type),
         address_line: formData.address_line,
@@ -233,11 +179,11 @@ const EditVendor = () => {
 
         <div className='flex flex-row '>
           <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={(e) => {
-            editVendorButton(formData, e)
-          }}>Edit</button>
+            createVendorButton(formData, e)
+          }}>Create</button>
           <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={(e) => {
             e.preventDefault()
-            navigate("/teams/vendor")
+            navigate("/finance/customer")
           }}>Cancel</button>
         </div>
       </form>
@@ -245,4 +191,4 @@ const EditVendor = () => {
   )
 }
 
-export default EditVendor
+export default CreateCustomer

@@ -1,32 +1,32 @@
 import React from 'react'
 import Receipts from '../../assets/MenuBarOptions/receipt.svg'
 import Sidebar from '../../components/Sidebar'
-import VendorTable from '../../components/Teams/VendorTable'
+import CustomerTable from '../../components/Teams/CustomerTable'
 
-const Vendor = () => {
+const Customer = () => {
     const Links = [
         {
           id: 1,
           name: "Vendor",
           logo: Receipts,
           link: "/teams/vendor",
-          selected: true
+          selected: false
         },
         {
             id: 2,
             name: "Customer",
             logo: Receipts,
             link: "/teams/customer",
-            selected: false
+            selected: true
         }
     ]
 
     return (
         <div className='flex w-screen'>
             <Sidebar selected="Teams" option={Links}/>
-            <VendorTable />
+            <CustomerTable />
         </div>
     )
 }
 
-export default Vendor
+export default Customer

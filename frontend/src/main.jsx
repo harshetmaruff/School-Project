@@ -29,6 +29,9 @@ import EditExchangeRate from './Pages/Finance/Edit/EditExchangeRate.jsx';
 import EditBank from './Pages/Finance/Edit/EditBank.jsx';
 import CreateVendor from './Pages/Teams/Create/CreateVendor.jsx';
 import EditVendor from './Pages/Teams/Edit/EditVendor.jsx';
+import Customer from './Pages/Teams/Customer.jsx';
+import CreateCustomer from './Pages/Teams/Create/CreateCustomer.jsx';
+import EditCustomer from './Pages/Teams/Edit/EditCustomer.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -72,12 +75,15 @@ createRoot(document.getElementById('root')).render(
           {/* Teams Routes */}
           <Route path='/teams/' element={<Navigate to='/teams/vendor'/>}/>
           <Route path='/teams/vendor' element={<Vendor />}/>
+          <Route path='/teams/customer' element={<Customer/>} />
 
           {/* Teams Create Routes */}
           <Route path='/teams/vendor/create' element={<CreateVendor />}/>
+          <Route path='/teams/vendor/customer' element={<CreateCustomer/>} />
 
           {/* Teams Edit Routes */}
           <Route path='/teams/vendor/:id/edit' element={<EditVendor />} />
+          <Route path='/teams/customer/:id/edit' element={<EditCustomer />} />
 
           {/* Inventory Routes */}
           <Route path='/inventory/' element={<Navigate to='/inventory/products' />} />
