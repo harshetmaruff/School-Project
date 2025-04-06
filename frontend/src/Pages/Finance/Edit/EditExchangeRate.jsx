@@ -145,7 +145,7 @@ const EditExchangeRate = () => {
         }
         else {
           let postData = {
-            base_currency_id: id,
+            base_currency_id: parseInt(id),
             target_currency_id: 1,
             rate: TableData[i].rate,
             effective_date: TableData[i].effective_date

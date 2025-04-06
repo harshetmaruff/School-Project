@@ -2101,6 +2101,7 @@ export const removePOSReceiptItem = async (Data, navigate) => {
     }
 };
 
+// Online Sales API
 export const getOnlineSales = async (navigate) => {
     const Method = {
         method: 'GET',
