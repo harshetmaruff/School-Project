@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router'
 import Receipts from '../../../assets/MenuBarOptions/receipt.svg'
 import { createAddress, createPartner, editAddress, editPartner, getAddress, getAddressType, getPartner } from '../../../components/api'
 
-const EditVendor = () => {
+const EditEmployee = () => {
 
   const navigate = useNavigate()
 
@@ -14,14 +14,14 @@ const EditVendor = () => {
       name: "Vendor",
       logo: Receipts,
       link: "/teams/vendor",
-      selected: true
+      selected: false
     },
     {
         id: 2,
         name: "Customer",
         logo: Receipts,
         link: "/teams/customer",
-        selected: false
+        selected: true
     },
     {
         id: 3,
@@ -122,7 +122,7 @@ const EditVendor = () => {
     let request = await editPartner({
         id:   formData.id,
         name: formData.vendor_name,
-        partner_type: "Supplier",
+        partner_type: "Employee",
         gst_number: formData.gst_number,
         pan_number: formData.pan_number
     }, navigate);
@@ -144,7 +144,7 @@ const EditVendor = () => {
     }, navigate)
     console.log(request)
 
-    navigate("/teams/vendor")
+    navigate("/teams/customer")
   }
 
   return (
@@ -152,12 +152,12 @@ const EditVendor = () => {
       <Sidebar selected='Teams' option={Links}/>
       <form className="flex-1 ml-4" action="">
         <div className='flex flex-row justify-between mt-4 mb-16'>
-          <h2 className='text-darkviolette font-bold text-2xl'>Vendor</h2>
+          <h2 className='text-darkviolette font-bold text-2xl'>Employee</h2>
         </div>
         <div className='mb-16 flex flex-col pb-16 mr-12 border-b-2 border-darkviolette'>
 
           <div className='flex flex-row'>
-            <p className='m-2'>Name of the Vendor: </p>
+            <p className='m-2'>Name of the Employee: </p>
             <input className="m-2 ring-2 ring-gray-300" type="text"
               name="vendor_name"
               value={formData.vendor_name}
@@ -244,7 +244,7 @@ const EditVendor = () => {
           }}>Edit</button>
           <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={(e) => {
             e.preventDefault()
-            navigate("/teams/vendor")
+            navigate("/teams/customer")
           }}>Cancel</button>
         </div>
       </form>
@@ -252,4 +252,4 @@ const EditVendor = () => {
   )
 }
 
-export default EditVendor
+export default EditEmployee

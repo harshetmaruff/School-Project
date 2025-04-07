@@ -26,7 +26,7 @@ const ExchangeRateTable = () => {
     <div className='flex-1 ml-4'>
         <div className='flex flex-row justify-between mt-4'>
             <h2 className='text-darkviolette font-bold text-2xl '>Exchange Rate</h2>
-            <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={() => { navigate("/finance/exchange_rate/create") }}>Create</button>
+            <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={() => { navigate("/finance/exchange_rate/create"); }}>Create</button>
         </div>
         <div className='mt-6 m-4'>
             <table className='w-full  table-auto'>

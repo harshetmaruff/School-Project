@@ -807,7 +807,7 @@ export const getProductCategories = async (navigate) => {
     }
 
     try {
-        const request = await fetch(apiurl + "/inventory/products/category", Method);
+        const request = await fetch(apiurl + "/inventory/product/category", Method);
         const data = await request.json().catch(() => ({}));
 
         if (request.status === 401) {
@@ -832,7 +832,7 @@ export const createProductCategory = async (Data, navigate) => {
     }
 
     try {
-        const request = await fetch(apiurl + "/inventory/products/category", Method);
+        const request = await fetch(apiurl + "/inventory/product/category", Method);
         const data = await request.json().catch(() => ({}));
 
         if (request.status === 401) {
@@ -857,7 +857,7 @@ export const editProductCategory = async (Data, navigate) => {
     }
 
     try {
-        const request = await fetch(apiurl + "/inventory/products/category/edit", Method);
+        const request = await fetch(apiurl + "/inventory/product/category/edit", Method);
         const data = await request.json().catch(() => ({}));
 
         if (request.status === 401) {
@@ -882,7 +882,7 @@ export const removeProductCategory = async (Data, navigate) => {
     }
 
     try {
-        const request = await fetch(apiurl + "/inventory/products/category/remove", Method);
+        const request = await fetch(apiurl + "/inventory/product/category/remove", Method);
         const data = await request.json().catch(() => ({}));
 
         if (request.status === 401) {

@@ -22,6 +22,13 @@ const EditCustomer = () => {
         logo: Receipts,
         link: "/teams/customer",
         selected: true
+    },
+    {
+        id: 3,
+        name: "Employee",
+        logo: Receipts,
+        link: "/teams/employee",
+        selected: false
     }
     ]
 
@@ -150,7 +157,7 @@ const EditCustomer = () => {
         <div className='mb-16 flex flex-col pb-16 mr-12 border-b-2 border-darkviolette'>
 
           <div className='flex flex-row'>
-            <p className='m-2'>Name of the Vendor: </p>
+            <p className='m-2'>Name of the Customer: </p>
             <input className="m-2 ring-2 ring-gray-300" type="text"
               name="vendor_name"
               value={formData.vendor_name}

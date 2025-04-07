@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router"
-import { getAddress, getCustomer, getPartner, removeAddress, removePartner } from "../api";
+import { getAddress, getCustomer, removeAddress, removePartner } from "../api";
 import { useEffect, useState } from "react";
 
-const CustomerTable = () => {
+const EmployeeTable = () => {
 
     const navigate = useNavigate();
 
@@ -23,8 +23,8 @@ const CustomerTable = () => {
     return (
       <div className='flex-1 ml-4'>
           <div className='flex flex-row justify-between mt-4'>
-              <h2 className='text-darkviolette font-bold text-2xl '>Customer</h2>
-              <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={ () => { navigate('/teams/customer/create') } }>Create</button>
+              <h2 className='text-darkviolette font-bold text-2xl '>Employee</h2>
+              <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={ () => { navigate('/teams/vendor/create') } }>Create</button>
           </div>
           <div className="mt-6 m-4">
             <table className="w-full table-auto">
@@ -46,7 +46,7 @@ const CustomerTable = () => {
                           <td className='p-2 text-green-500 font-bold text-right'>
                              <span
                                  onClick={async () => {
-                                    navigate("/teams/customer/" + item.id + "/edit")
+                                    navigate("/teams/vendor/" + item.id + "/edit")
                                  }}
                              >EDIT</span> 
                              <span
@@ -83,4 +83,4 @@ const CustomerTable = () => {
     )
   }
   
-  export default CustomerTable
+export default EmployeeTable

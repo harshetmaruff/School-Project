@@ -1,9 +1,9 @@
 import React from 'react'
 import Receipts from '../../assets/MenuBarOptions/receipt.svg'
 import Sidebar from '../../components/Sidebar'
-import CustomerTable from '../../components/Teams/CustomerTable'
+import EmployeeTable from '../../components/Teams/EmployeeTable'
 
-const Customer = () => {
+const Employee = () => {
     const Links = [
         {
           id: 1,
@@ -17,23 +17,23 @@ const Customer = () => {
             name: "Customer",
             logo: Receipts,
             link: "/teams/customer",
-            selected: true
+            selected: false
         },
         {
             id: 3,
             name: "Employee",
             logo: Receipts,
             link: "/teams/employee",
-            selected: false
+            selected: true
         }
     ]
 
     return (
         <div className='flex w-screen'>
             <Sidebar selected="Teams" option={Links}/>
-            <CustomerTable />
+            <EmployeeTable />
         </div>
     )
 }
 
-export default Customer
+export default Employee

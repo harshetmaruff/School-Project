@@ -18,6 +18,13 @@ const Vendor = () => {
             logo: Receipts,
             link: "/teams/customer",
             selected: false
+        },
+        {
+            id: 3,
+            name: "Employee",
+            logo: Receipts,
+            link: "/teams/employee",
+            selected: false
         }
     ]
 

@@ -32,6 +32,15 @@ import EditVendor from './Pages/Teams/Edit/EditVendor.jsx';
 import Customer from './Pages/Teams/Customer.jsx';
 import CreateCustomer from './Pages/Teams/Create/CreateCustomer.jsx';
 import EditCustomer from './Pages/Teams/Edit/EditCustomer.jsx';
+import CreateEmployee from './Pages/Teams/Create/CreateEmployee.jsx';
+import EditEmployee from './Pages/Teams/Edit/EditEmployee.jsx';
+import Employee from './Pages/Teams/Employee.jsx';
+import ProductCategory from './Pages/Inventory/ProductCategory.jsx';
+import CreateProductCategory from './Pages/Inventory/Create/CreateProductCategory.jsx';
+import Warehouse from './Pages/Inventory/Warehouse.jsx';
+import CreateWarehouse from './Pages/Inventory/Create/CreateWarehouse.jsx';
+import CreateProduct from './Pages/Inventory/Create/CreateProduct.jsx';
+import EditProduct from './Pages/Teams/Edit/EditProduct.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -76,19 +85,31 @@ createRoot(document.getElementById('root')).render(
           <Route path='/teams/' element={<Navigate to='/teams/vendor'/>}/>
           <Route path='/teams/vendor' element={<Vendor />}/>
           <Route path='/teams/customer' element={<Customer/>} />
+          <Route path='/teams/employee' element={<Employee/>} />
 
           {/* Teams Create Routes */}
           <Route path='/teams/vendor/create' element={<CreateVendor />}/>
-          <Route path='/teams/vendor/customer' element={<CreateCustomer/>} />
+          <Route path='/teams/customer/create' element={<CreateCustomer/>} />
+          <Route path='/teams/employee/create' element={<CreateEmployee />} />
 
           {/* Teams Edit Routes */}
           <Route path='/teams/vendor/:id/edit' element={<EditVendor />} />
           <Route path='/teams/customer/:id/edit' element={<EditCustomer />} />
+          <Route path='/teams/employee/:id/edit' element={<EditEmployee />} />
 
           {/* Inventory Routes */}
           <Route path='/inventory/' element={<Navigate to='/inventory/products' />} />
           <Route path='/inventory/products' element={<Products />} />
-          <Route path='/inventory/goods_receipt'/>
+          <Route path='/inventory/product_category' element={<ProductCategory/>} />
+          <Route path='/inventory/warehouse' element={<Warehouse />} />
+
+          {/* Inventory Create Routes */}
+          <Route path='/inventory/product_category/create' element={<CreateProductCategory/>} />
+          <Route path='/inventory/warehouse/create' element={<CreateWarehouse/>} />
+          <Route path='/inventory/products/create' element={<CreateProduct />} />
+
+          {/* Inventory Edit Routes */}
+          <Route path='/inventory/products/:id/edit' element={<EditProduct />} />
 
           {/* Sales Routes */}
           <Route path='/sales/' element={<Navigate to='/sales/invoice' />} />

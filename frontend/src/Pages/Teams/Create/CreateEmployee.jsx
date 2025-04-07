@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../../../components/Sidebar'
-import { useNavigate, useParams } from 'react-router'
 import Receipts from '../../../assets/MenuBarOptions/receipt.svg'
-import { createAddress, createPartner, editAddress, editPartner, getAddress, getAddressType, getPartner } from '../../../components/api'
+import { useNavigate } from 'react-router'
+import { createAddress, createPartner, getAddressType, getPartner } from '../../../components/api'
 
-const EditVendor = () => {
+const CreateEmployee = () => {
 
   const navigate = useNavigate()
 
@@ -14,7 +14,7 @@ const EditVendor = () => {
       name: "Vendor",
       logo: Receipts,
       link: "/teams/vendor",
-      selected: true
+      selected: false
     },
     {
         id: 2,
@@ -28,11 +28,9 @@ const EditVendor = () => {
         name: "Employee",
         logo: Receipts,
         link: "/teams/employee",
-        selected: false
+        selected: true
     }
-    ]
-
-  const { id } = useParams();
+  ]
 
   const [AddressType, SetAddressType] = useState([]);
 
@@ -49,59 +47,10 @@ const EditVendor = () => {
 
   const setAddressType = async () => {
     let request = await getAddressType(navigate);
+
+
     console.log(request)
     SetAddressType(request)
-
-    request = await getPartner(navigate);
-    let partnerdata, addressdata;
-
-
-    for (let i = 0; i < request.length; i++) {
-      if (request[i].id == id) {
-        partnerdata = request[i];
-        console.log(partnerdata)
-        setFormData({
-          ...formData,
-          id: partnerdata.id,
-          vendor_name: partnerdata.name,
-          pan_number: partnerdata.pan_number,
-          gst_number: partnerdata.gst_number,
-        })
-        console.log(formData)
-        break;
-      }
-    }
-
-    request = await getAddress(navigate);
-    for (let i = 0; i < request.length; i++) {
-      if (request[i].partner_id == id) {
-        addressdata = request[i];
-        setFormData({
-          ...formData,
-          address_id: addressdata.id,
-          address_type: addressdata.address_type,
-          address_line: addressdata.address_line,
-          city: addressdata.city,
-          state: addressdata.state_name,
-          postal_code: addressdata.postal_code
-        })
-        break;
-      }
-    }
-
-
-    setFormData({
-      id: partnerdata.id,
-      vendor_name: partnerdata.name,
-      pan_number: partnerdata.pan_number,
-      gst_number: partnerdata.gst_number,
-      address_id: addressdata.id,
-      address_type: addressdata.address_type_id,
-      address_line: addressdata.address_line,
-      city: addressdata.city,
-      state: addressdata.state_name,
-      postal_code: addressdata.postal_code
-    })
   }
 
   useEffect(() => {
@@ -116,13 +65,11 @@ const EditVendor = () => {
     })
   }
 
-  const editVendorButton = async (formData, e) => {
-    console.log(formData)
+  const createVendorButton = async (formData, e) => {
     e.preventDefault()
-    let request = await editPartner({
-        id:   formData.id,
+    let request = await createPartner({
         name: formData.vendor_name,
-        partner_type: "Supplier",
+        partner_type: "Employee",
         gst_number: formData.gst_number,
         pan_number: formData.pan_number
     }, navigate);
@@ -133,8 +80,7 @@ const EditVendor = () => {
     let data = request.at(-1)
     console.log(data)
 
-    request = await editAddress({
-        id: formData.address_id,
+    request = await createAddress({
         partner_id: data.id,
         address_type_id: parseInt(formData.address_type),
         address_line: formData.address_line,
@@ -152,12 +98,12 @@ const EditVendor = () => {
       <Sidebar selected='Teams' option={Links}/>
       <form className="flex-1 ml-4" action="">
         <div className='flex flex-row justify-between mt-4 mb-16'>
-          <h2 className='text-darkviolette font-bold text-2xl'>Vendor</h2>
+          <h2 className='text-darkviolette font-bold text-2xl'>Employee</h2>
         </div>
         <div className='mb-16 flex flex-col pb-16 mr-12 border-b-2 border-darkviolette'>
 
           <div className='flex flex-row'>
-            <p className='m-2'>Name of the Vendor: </p>
+            <p className='m-2'>Name of the Employee: </p>
             <input className="m-2 ring-2 ring-gray-300" type="text"
               name="vendor_name"
               value={formData.vendor_name}
@@ -240,11 +186,11 @@ const EditVendor = () => {
 
         <div className='flex flex-row '>
           <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={(e) => {
-            editVendorButton(formData, e)
-          }}>Edit</button>
+            createVendorButton(formData, e)
+          }}>Create</button>
           <button className='font-bold text-xl mr-10 p-2 px-4 bg-darkviolette text-white' onClick={(e) => {
             e.preventDefault()
-            navigate("/teams/vendor")
+            navigate("/finance/customer")
           }}>Cancel</button>
         </div>
       </form>
@@ -252,4 +198,4 @@ const EditVendor = () => {
   )
 }
 
-export default EditVendor
+export default CreateEmployee

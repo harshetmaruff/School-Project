@@ -49,10 +49,10 @@ async fn main() -> std::io::Result<()> {
             .service(address_create)                    //                    /teams/address                            POST
             .service(address_edit)                      //                    /teams/address/edit                       POST
             .service(address_remove)                    //                    /teams/address/remove                     POST
-            .service(product_category_list)             //                    /inventory/products/category              GET 
-            .service(product_category_create)           //                    /inventory/products/category              POST
-            .service(product_category_edit)             //                    /inventory/products/category/edit         POST
-            .service(product_category_remove)           //                    /inventory/products/category/remove       POST
+            .service(product_category_list)             //                    /inventory/product/category               GET
+            .service(product_category_create)           //                    /inventory/product/category               POST
+            .service(product_category_edit)             //                    /inventory/product/category/edit          POST
+            .service(product_category_remove)           //                    /inventory/product/category/remove        POST
             .service(product_list)                      //                    /inventory/product                        GET 
             .service(product_create)                    //                    /inventory/product                        POST
             .service(product_edit)                      //                    /inventory/product/edit                   POST

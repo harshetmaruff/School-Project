@@ -1,9 +1,9 @@
 import React from 'react'
 import Receipts from '../../assets/MenuBarOptions/receipt.svg'
 import Sidebar from '../../components/Sidebar'
-import ProductSide from '../../components/Inventory/ProductSide'
+import ProductCategoryTable from '../../components/Inventory/ProductCategoryTable'
 
-const Products = () => {
+const ProductCategory = () => {
 
     const Link = [
         {
@@ -11,14 +11,14 @@ const Products = () => {
             name: "Products",
             logo: Receipts,
             link: "/inventory/products",
-            selected: true
+            selected: false
         },
         {
             id: 2,
             name: "Product Category",
             logo: Receipts,
             link: "/inventory/product_category",
-            selected: false
+            selected: true
         },
         {
             id: 3,
@@ -39,9 +39,9 @@ const Products = () => {
     return (
         <div className='flex w-screen'>
             <Sidebar selected='Inventory' option={Link} />
-            <ProductSide />
+            <ProductCategoryTable />
         </div>
     )
 }
 
-export default Products
+export default ProductCategory

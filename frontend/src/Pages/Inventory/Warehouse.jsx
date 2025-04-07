@@ -1,9 +1,9 @@
 import React from 'react'
 import Receipts from '../../assets/MenuBarOptions/receipt.svg'
 import Sidebar from '../../components/Sidebar'
-import ProductSide from '../../components/Inventory/ProductSide'
+import WarehouseTable from '../../components/Inventory/WarehouseTable'
 
-const Products = () => {
+const Warehouse = () => {
 
     const Link = [
         {
@@ -11,7 +11,7 @@ const Products = () => {
             name: "Products",
             logo: Receipts,
             link: "/inventory/products",
-            selected: true
+            selected: false
         },
         {
             id: 2,
@@ -25,7 +25,7 @@ const Products = () => {
             name: "Warehouse",
             logo: Receipts,
             link: "/inventory/warehouse",
-            selected: false
+            selected: true
         },
         {
             id: 4,
@@ -39,9 +39,9 @@ const Products = () => {
     return (
         <div className='flex w-screen'>
             <Sidebar selected='Inventory' option={Link} />
-            <ProductSide />
+            <WarehouseTable />
         </div>
-    )
+    ) 
 }
 
-export default Products
+export default Warehouse
