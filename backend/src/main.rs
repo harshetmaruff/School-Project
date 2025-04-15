@@ -41,6 +41,10 @@ async fn main() -> std::io::Result<()> {
             .service(create_bank)                       //                    /accounts/bank                            POST
             .service(edit_bank)                         //                    /accounts/bank/edit                       POST
             .service(remove_bank)                       //                    /accounts/bank/remove                     POST
+            .service(get_ledger)                        //                    /accounts/ledger                          GET
+            .service(create_ledger_)                    //                    /accounts/ledger                          POST
+            .service(edit_ledger_)                      //                    /accounts/ledger/edit                     POST
+            .service(remove_ledger)                     //                    /accounts/ledger/remove                   POST
             .service(partner_list)                      //                    /teams/partner                            GET 
             .service(partner_create)                    //                    /teams/partner                            POST
             .service(partner_edit)                      //                    /teams/partner/edit                       POST

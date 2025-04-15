@@ -2347,3 +2347,123 @@ export const removeFinancialYear = async (Data, navigate) => {
         console.error("Network error:", error.message);
     }
 }
+
+// Accounts Ledger
+export const getLedger = async (navigate) => {
+    
+    const Method = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/ledger", Method);
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/")
+        }
+
+        if (request.ok) {
+            return data
+        }
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const postLedger = async (Data, navigate) => {
+
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/ledger", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const editLedger = async (Data, navigate) => {
+
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/ledger/edit", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const removeLedger = async (Data, navigate) => {
+
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/ledger/remove", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}

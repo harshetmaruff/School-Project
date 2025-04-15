@@ -17,6 +17,7 @@ use crate::ops::purchase::transfer::*;
 use crate::ops::pos::receipt::*;
 use crate::ops::pos::shop::*;
 use crate::ops::ecommerce::online_sales::*;
+use crate::ops::accounts::ledger::*;
 
 
 use crate::ops::userdata_handler::verify_user;
@@ -1206,6 +1207,59 @@ async fn online_sale_remove(req: actix_web::HttpRequest, data: web::Json<OnlineS
         let token = auth.to_str().unwrap_or("").replace("Bearer ", "");
         if verify_jwt(&token) {
             return HttpResponse::Ok().json(delete_online_sales(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+
+#[get("/accounts/ledger")]
+async fn get_ledger(req: actix_web::HttpRequest) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(list_ledger());
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/accounts/ledger")]
+async fn create_ledger_(req: actix_web::HttpRequest, data: web::Json<NewLedger>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_ledger(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/accounts/ledger/edit")]
+async fn edit_ledger_(req: actix_web::HttpRequest, data: web::Json<Ledger>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(edit_ledger(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/accounts/ledger/remove")]
+async fn remove_ledger(req: actix_web::HttpRequest, data: web::Json<Ledger>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(delete_ledger(data.into_inner()));
         }
     }
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
