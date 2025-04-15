@@ -1,82 +1,82 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar'
-import CreditNoteTable from '../../components/Finance/CreditNoteTable'
-import Receipts from '../../assets/MenuBarOptions/receipt.svg'
+import Receipt from '../../assets/MenuBarOptions/receipt.svg'
+import FinancialYearTable from '../../components/Finance/FinancialYearTable'
 
-const CreditNote = () => {
+const FinancialYear = () => {
 
     const Link = [
         {
           id: 1,
           name: "Journal",
-          logo: Receipts,
+          logo: Receipt,
           link: "/finance/journal",
           selected: false
         },
         {
           id: 2,
           name: "Receipt",
-          logo: Receipts,
+          logo: Receipt,
           link: "/finance/receipt",
           selected: false
         },
         {
           id: 3,
           name: "Payments",
-          logo: Receipts,
+          logo: Receipt,
           link: "/finance/payments",
           selected: false
         },
         {
           id: 4,
           name: "Credit Note",
-          logo: Receipts,
+          logo: Receipt,
           link: "/finance/credit_note",
-          selected: true
+          selected: false
         },
         {
           id: 5,
           name: "Debit Note",
-          logo: Receipts,
+          logo: Receipt,
           link: "/finance/debit_note",
           selected: false
         },
         {
           id: 6,
           name: "Ledger",
-          logo: Receipts,
+          logo: Receipt,
           link: "/finance/ledger",
           selected: false
         },
         {
           id: 7,
           name: "Bank",
-          logo: Receipts,
+          logo: Receipt,
           link: "/finance/bank",
           selected: false
         },
         {
           id: 8,
           name: "Exchange Rate",
-          logo: Receipts,
+          logo: Receipt,
           link: "/finance/exchange_rate",
           selected: false
         },
         {
           id: 9,
           name: "Financial Year",
-          logo: Receipts,
+          logo: Receipt,
           link: "/finance/financial_year",
-          selected: false
+          selected: true
         },
     ]
 
     return (
-        <div className='flex w-screen'>
-            <Sidebar selected='Finance' option={Link} />
-            <CreditNoteTable />
-        </div>
+      <div className='flex w-screen'>
+          <Sidebar selected='Finance' option={Link}/>
+          <FinancialYearTable />
+      </div>
     )
 }
 
-export default CreditNote
+export default FinancialYear

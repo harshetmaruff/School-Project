@@ -40,7 +40,11 @@ import CreateProductCategory from './Pages/Inventory/Create/CreateProductCategor
 import Warehouse from './Pages/Inventory/Warehouse.jsx';
 import CreateWarehouse from './Pages/Inventory/Create/CreateWarehouse.jsx';
 import CreateProduct from './Pages/Inventory/Create/CreateProduct.jsx';
-import EditProduct from './Pages/Teams/Edit/EditProduct.jsx';
+import EditProduct from './Pages/Inventory/Edit/EditProduct.jsx';
+import EditWarehouse from './Pages/Inventory/Edit/EditWarehouse.jsx';
+import FinancialYear from './Pages/Finance/FinancialYear.jsx';
+import EditFinancialYear from './Pages/Finance/Edit/EditFinancialYear.jsx';
+import CreateFinancialYear from './Pages/Finance/Create/CreateFinancialYear.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -57,6 +61,7 @@ createRoot(document.getElementById('root')).render(
           <Route path='/finance/ledger' element={<Ledger />} />
           <Route path='/finance/bank' element={<Bank />} />
           <Route path='/finance/exchange_rate' element={<ExchangeRate />} />
+          <Route path='/finance/financial_year' element={<FinancialYear />} />
 
           {/* Finance Create Routes */}
           <Route path='/finance/journal/create' element={<CreateJournal />} />
@@ -66,10 +71,12 @@ createRoot(document.getElementById('root')).render(
           <Route path='/finance/debit_note/create' element={<CreateDebitNote />} />
           <Route path='/finance/bank/create' element={<CreateBank />}/>
           <Route path='/finance/exchange_rate/create' element={<CreateExchangeRate />} />
+          <Route path='/finance/financial_year/create' element={<CreateFinancialYear />} />
 
           {/* Finance Edit Routes */}
           <Route path='/finance/bank/:id/edit' element={<EditBank />}/>
           <Route path='/finance/exchange_rate/:id/edit' element={<EditExchangeRate />}/>
+          <Route path='/finance/financial_year/:id/edit' element={<EditFinancialYear />} />
 
           {/* eCommerce Routes */}
           <Route path='/ecommerce/' element={<Navigate to='/ecommerce/orders'/>} />
@@ -110,6 +117,7 @@ createRoot(document.getElementById('root')).render(
 
           {/* Inventory Edit Routes */}
           <Route path='/inventory/products/:id/edit' element={<EditProduct />} />
+          <Route path='/inventory/warehouse/:id/edit' element={<EditWarehouse />}/>
 
           {/* Sales Routes */}
           <Route path='/sales/' element={<Navigate to='/sales/invoice' />} />

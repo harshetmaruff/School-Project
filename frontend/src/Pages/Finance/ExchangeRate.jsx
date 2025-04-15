@@ -62,6 +62,13 @@ const ExchangeRate = () => {
           link: "/finance/exchange_rate",
           selected: true
         },
+        {
+          id: 9,
+          name: "Financial Year",
+          logo: Receipts,
+          link: "/finance/financial_year",
+          selected: false
+        },
     ]
 
     return (

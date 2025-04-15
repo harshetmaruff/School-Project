@@ -242,7 +242,7 @@ pub struct NewAddressType {
 #[diesel(table_name = crate::schema::financial_year)]
 #[diesel(check_for_backend(Pg))]
 pub struct FinancialYear {
-    pub id: i64,
+    pub id: i32,
     pub name: String,
     pub start_date: NaiveDate,
     pub end_date: NaiveDate,

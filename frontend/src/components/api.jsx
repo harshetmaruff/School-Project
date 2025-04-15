@@ -2225,3 +2225,125 @@ export const removeOnlineSale = async (Data, navigate) => {
         console.error("Network error: ", error.message);
     }
 };
+
+// Financial Year
+export const getFinancialYear = async (navigate) => {
+    
+    const Method = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/financialyear", Method);
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/")
+        }
+
+        if (request.ok) {
+            return data
+        }
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const postFinancialYear = async (Data, navigate) => {
+
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/financialyear", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const editFinancialYear = async (Data, navigate) => {
+
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/financialyear/edit", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            data.then(value => {
+                return value
+            })
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const removeFinancialYear = async (Data, navigate) => {
+
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/financialyear/remove", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            data.then(value => {
+                return value
+            })
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}

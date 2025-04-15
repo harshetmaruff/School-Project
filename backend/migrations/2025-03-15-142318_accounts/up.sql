@@ -152,7 +152,7 @@ INSERT INTO coa_master(id, name, code, account_type, parent_id, currency_code, s
 
 
 CREATE TABLE financial_year (
-  id BIGINT NOT NULL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(20) NOT NULL,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
@@ -162,9 +162,16 @@ CREATE TABLE financial_year (
 );
 
 -- Adding financial_year values
-INSERT INTO financial_year(id, name, start_date, end_date, status, created_at, updated_at) VALUES
-(1, '2024', '2024-04-01', '2025-03-31', 'Open', '2025-01-30 13:02:18', '2025-01-30 13:02:18'),
-(2, '2025', '2025-04-01', '2026-03-31', 'Open', '2025-01-30 13:03:27', '2025-01-30 13:03:27');
+INSERT INTO financial_year(name, start_date, end_date, status, created_at, updated_at) VALUES
+('2024', '2024-04-01', '2025-03-31', 'Open', '2025-01-30 13:02:18', '2025-01-30 13:02:18'),
+('2025', '2025-04-01', '2026-03-31', 'Open', '2025-01-30 13:03:27', '2025-01-30 13:03:27');
+
+CREATE TRIGGER update_financial_year
+BEFORE UPDATE
+ON financial_year
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
 
 --journal table
 CREATE TABLE ledger (

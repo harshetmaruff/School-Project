@@ -5,6 +5,7 @@ use crate::{models::{Address, AddressType, BankAccount, Currency, NewAddress, Ne
 use crate::models::*;
 
 use crate::ops::accounts::exchange_rate::*;
+use crate::ops::accounts::financial_year::*;
 use crate::ops::inventory::product::*;
 use crate::ops::inventory::warehouse::*;
 use crate::ops::inventory::inventory_stock::*;
@@ -150,7 +151,71 @@ async fn remove_exchange_rate_(req: actix_web::HttpRequest, data: web::Json<Exch
     }
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
 }
-// ----------------------------------------
+// --- Financial Years --------------------------------
+// Get Financial Years
+#[get("/accounts/financialyear")]
+async fn get_financial_year(req: actix_web::HttpRequest) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(list_financial_year());
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+// Add Financial Year
+#[post("/accounts/financialyear")]
+async fn create_financial_year_(
+    req: actix_web::HttpRequest,
+    data: web::Json<NewFinancialYear>,
+) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_financial_year(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+// Edit Financial Year
+#[post("/accounts/financialyear/edit")]
+async fn edit_financial_year_(
+    req: actix_web::HttpRequest,
+    data: web::Json<FinancialYear>,
+) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(edit_financial_year(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+// Delete Financial Year
+#[post("/accounts/financialyear/remove")]
+async fn remove_financial_year(
+    req: actix_web::HttpRequest,
+    data: web::Json<FinancialYear>,
+) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(delete_financial_year(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
 
 // Bank -----------------------------------
 #[get("/accounts/bank")]

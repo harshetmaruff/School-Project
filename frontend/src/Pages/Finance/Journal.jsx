@@ -62,6 +62,13 @@ const Journal = () => {
           link: "/finance/exchange_rate",
           selected: false
         },
+        {
+          id: 9,
+          name: "Financial Year",
+          logo: Receipt,
+          link: "/finance/financial_year",
+          selected: false
+        },
     ]
 
     return (

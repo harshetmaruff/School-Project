@@ -33,6 +33,10 @@ async fn main() -> std::io::Result<()> {
             .service(post_exchange_rate)                //                    /accounts/exchange_rate                   POST
             .service(edit_exchange_rate_)               //                    /accounts/exchange_rate/edit              POST
             .service(remove_exchange_rate_)             //                    /accounts/exchange_rate/remove            POST
+            .service(get_financial_year)                //                    /accounts/financialyear                  GET
+            .service(create_financial_year_)            //                    /accounts/financialyear                  POST
+            .service(edit_financial_year_)              //                    /accounts/financialyear/edit             POST
+            .service(remove_financial_year)             //                    /accounts/financialyear/remove           POST
             .service(get_bank_list)                     //                    /accounts/bank                            GET
             .service(create_bank)                       //                    /accounts/bank                            POST
             .service(edit_bank)                         //                    /accounts/bank/edit                       POST
