@@ -12,7 +12,7 @@ const EditProduct = () => {
     { id: 1, name: "Products", logo: Receipts, link: "/inventory/products", selected: true },
     { id: 2, name: "Product Category", logo: Receipts, link: "/inventory/product_category", selected: false },
     { id: 3, name: "Warehouse", logo: Receipts, link: "/inventory/warehouse", selected: false },
-    { id: 4, name: "Delivery", logo: Receipts, link: "/inventory/delivery", selected: false }
+    { id: 4, name: "Transfer", logo: Receipts, link: "/inventory/transfer", selected: false },
   ];
 
   const [formData, setFormData] = useState({
@@ -22,7 +22,8 @@ const EditProduct = () => {
     product_category_id: '',
     product_description: '',
     sellable: false,
-    img: null
+    img: null,
+    price: ''
   });
 
   const [categories, setCategories] = useState([])
@@ -39,14 +40,14 @@ const EditProduct = () => {
           product_category_id: product.product_category_id,
           product_description: product.product_description || '',
           sellable: product.sellable || false,
-          img: null // optional field for update
+          img: null,
+          price: product.price?.toString() || ''
         });
       }
     }
     const fetchCategories = async () => {
-          const response = await getProductCategories(navigate)
-          console.log(response)
-          if (Array.isArray(response)) setCategories(response)
+      const response = await getProductCategories(navigate)
+      if (Array.isArray(response)) setCategories(response)
     }
     fetchProduct();
     fetchCategories();
@@ -96,7 +97,8 @@ const EditProduct = () => {
       product_category_id: parseInt(formData.product_category_id),
       product_description: formData.product_description || null,
       sellable: formData.sellable,
-      img: formData.img || null
+      img: formData.img || null,
+      price: parseFloat(formData.price)
     }
     await editProduct(data, navigate);
     navigate("/inventory/products")
@@ -165,6 +167,20 @@ const EditProduct = () => {
           </div>
 
           <div className="flex flex-row">
+            <p className="m-2 w-48">Price:</p>
+            <input
+              name="price"
+              value={formData.price}
+              onChange={handleInputChange}
+              className="m-2 ring-2 ring-gray-300 flex-1"
+              type="number"
+              step="0.01"
+              min="0"
+              required
+            />
+          </div>
+
+          <div className="flex flex-row">
             <p className="m-2 w-48">Description:</p>
             <textarea
               name="product_description"
@@ -220,3 +236,4 @@ const EditProduct = () => {
 }
 
 export default EditProduct
+

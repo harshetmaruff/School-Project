@@ -45,12 +45,24 @@ import EditWarehouse from './Pages/Inventory/Edit/EditWarehouse.jsx';
 import FinancialYear from './Pages/Finance/FinancialYear.jsx';
 import EditFinancialYear from './Pages/Finance/Edit/EditFinancialYear.jsx';
 import CreateFinancialYear from './Pages/Finance/Create/CreateFinancialYear.jsx';
+import CreateCounters from './Pages/POS/Create/CreateCounters.jsx';
+import ShopSession from './Pages/POS/ShopSession.jsx';
+import Transfer from './Pages/Inventory/Transfer.jsx';
+import CreateTransfer from './Pages/Inventory/Create/CreateTransfer.jsx';
+import Pages from './Pages/eCommerce/Pages.jsx';
+import CreatePage from './Pages/eCommerce/Create/CreatePage.jsx';
+import EditPage from './Pages/eCommerce/Edit/EditPage.jsx';
+import EditDetails from './Pages/eCommerce/Edit/EditDetails.jsx';
+import Website from './Pages/eCommerce/Website.jsx';
+import Analytics from './Pages/Analytics.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
       <Routes>
           <Route index element={<App/>} />
-          
+          {/* Analytics */}
+          <Route path='/analytics' element={<Analytics/>}/>
+
           {/* Finance Routes */}
           <Route path='/finance/' element={<Navigate to='/finance/journal'/>} />
           <Route path='/finance/journal' element={<Journal />} />
@@ -79,14 +91,28 @@ createRoot(document.getElementById('root')).render(
           <Route path='/finance/financial_year/:id/edit' element={<EditFinancialYear />} />
 
           {/* eCommerce Routes */}
-          <Route path='/ecommerce/' element={<Navigate to='/ecommerce/orders'/>} />
-          <Route path='/ecommerce/orders/' element={<Orders />} />
+          <Route path='/ecommerce/' element={<Navigate to='/ecommerce/pages'/>} />
+          {/* <Route path='/ecommerce/orders/' element={<Orders />} /> */}
+          <Route path='/ecommerce/pages' element={<Pages/>}/>
+          <Route path='/ecommerce/details' element={<EditDetails/>} />
+
+          <Route path='/website' element={<Website />} />
+
+          {/* eCommerce Create Routes */}
+          <Route path='/ecommerce/pages/create' element={<CreatePage />} />
+
+          {/* eCommerce Edit Routes */}
+          <Route path='/ecommerce/pages/:id/edit' element={<EditPage />} />
 
           
           {/* Point Of Sale Routes */}
           <Route path='/pos/' element={<Navigate to='/pos/counters'/>} />
           <Route path='/pos/counters' element={<Counters />}/>
           <Route path='/pos/counters/:cid' element={<POS />} />
+          <Route path='/pos/shop_session' element={<ShopSession />} />
+
+          {/* Point of Sale Create Routes */}
+          <Route path='/pos/counters/create' element={<CreateCounters />} />
 
           {/* Teams Routes */}
           <Route path='/teams/' element={<Navigate to='/teams/vendor'/>}/>
@@ -109,11 +135,13 @@ createRoot(document.getElementById('root')).render(
           <Route path='/inventory/products' element={<Products />} />
           <Route path='/inventory/product_category' element={<ProductCategory/>} />
           <Route path='/inventory/warehouse' element={<Warehouse />} />
+          <Route path='/inventory/transfer' element={<Transfer />} />
 
           {/* Inventory Create Routes */}
           <Route path='/inventory/product_category/create' element={<CreateProductCategory/>} />
           <Route path='/inventory/warehouse/create' element={<CreateWarehouse/>} />
           <Route path='/inventory/products/create' element={<CreateProduct />} />
+          <Route path='/inventory/transfer/create' element={<CreateTransfer />} />
 
           {/* Inventory Edit Routes */}
           <Route path='/inventory/products/:id/edit' element={<EditProduct />} />

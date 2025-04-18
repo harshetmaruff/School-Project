@@ -45,6 +45,14 @@ async fn main() -> std::io::Result<()> {
             .service(create_ledger_)                    //                    /accounts/ledger                          POST
             .service(edit_ledger_)                      //                    /accounts/ledger/edit                     POST
             .service(remove_ledger)                     //                    /accounts/ledger/remove                   POST
+            .service(get_journal)                       //                    /accounts/journal                         GET
+            .service(create_journal_)                   //                    /accounts/journal                         POST
+            .service(edit_journal_)                     //                    /accounts/journal/edit                    POST
+            .service(delete_journal_)                   //                    /accounts/journal/remove                  POST
+            .service(get_transaction_type)              //                    /accounts/transaction_type                GET
+            .service(create_transaction_type_)          //                    /accounts/transaction_type                POST
+            .service(edit_transaction_type_)            //                    /accounts/transaction_type/edit           POST
+            .service(remove_transaction_type)           //                    /accounts/transaction_type/remove         POST
             .service(partner_list)                      //                    /teams/partner                            GET 
             .service(partner_create)                    //                    /teams/partner                            POST
             .service(partner_edit)                      //                    /teams/partner/edit                       POST
@@ -115,7 +123,14 @@ async fn main() -> std::io::Result<()> {
             .service(online_sale_create)                //                    /ecommerce/online-sale/create             POST
             .service(online_sale_edit)                  //                    /ecommerce/online-sale/edit               POST
             .service(online_sale_remove)                //                    /ecommerce/online-sale/remove             POST
-
+            .service(get_pages)                         //                    /ecommerce/pages                          GET
+            .service(create_page_)                      //                    /ecommerce/pages                          POST
+            .service(edit_page_)                        //                    /ecommerce/pages/edit                     POST
+            .service(remove_page_)                      //                    /ecommerce/pages/remove                   POST
+            .service(get_business_detail)               //                    /ecommerce/business_detail                GET
+            .service(create_business_detail_)           //                    /ecommerce/business_detail                POST
+            .service(edit_business_detail_)             //                    /ecommerce/business_detail/edit           POST
+            .service(remove_business_detail_)           //                    /ecommerce/business_detail/remove         POST
     })
     .bind("127.0.0.1:8080")?
     .run()

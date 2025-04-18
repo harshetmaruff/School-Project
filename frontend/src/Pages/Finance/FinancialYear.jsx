@@ -14,34 +14,6 @@ const FinancialYear = () => {
           selected: false
         },
         {
-          id: 2,
-          name: "Receipt",
-          logo: Receipt,
-          link: "/finance/receipt",
-          selected: false
-        },
-        {
-          id: 3,
-          name: "Payments",
-          logo: Receipt,
-          link: "/finance/payments",
-          selected: false
-        },
-        {
-          id: 4,
-          name: "Credit Note",
-          logo: Receipt,
-          link: "/finance/credit_note",
-          selected: false
-        },
-        {
-          id: 5,
-          name: "Debit Note",
-          logo: Receipt,
-          link: "/finance/debit_note",
-          selected: false
-        },
-        {
           id: 6,
           name: "Ledger",
           logo: Receipt,

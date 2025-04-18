@@ -18,6 +18,10 @@ use crate::ops::pos::receipt::*;
 use crate::ops::pos::shop::*;
 use crate::ops::ecommerce::online_sales::*;
 use crate::ops::accounts::ledger::*;
+use crate::ops::accounts::journal::*;
+use crate::ops::accounts::transaction_type::*;
+use crate::ops::ecommerce::business_detail::*;
+use crate::ops::ecommerce::pages::*;
 
 
 use crate::ops::userdata_handler::verify_user;
@@ -493,15 +497,7 @@ async fn product_category_remove(req: actix_web::HttpRequest, data: web::Json<Pr
 // -- Product
 #[get("/inventory/product")]
 async fn product_list(req: actix_web::HttpRequest) -> impl Responder {
-    use crate::ops::encrypt::verify_jwt;
-
-    if let Some(auth_header) = req.headers().get("Authorization") {
-        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
-        if verify_jwt(&token) {
-            return HttpResponse::Ok().json(list_product());
-        }
-    }
-    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+    return HttpResponse::Ok().json(list_product());
 }
 
 #[post("/inventory/product")]
@@ -1262,5 +1258,203 @@ async fn remove_ledger(req: actix_web::HttpRequest, data: web::Json<Ledger>) -> 
             return HttpResponse::Ok().json(delete_ledger(data.into_inner()));
         }
     }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[get("/accounts/journal")]
+async fn get_journal(req: actix_web::HttpRequest) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(list_journal());
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/accounts/journal")]
+async fn create_journal_(req: actix_web::HttpRequest, data: web::Json<NewJournal>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_journal(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/accounts/journal/edit")]
+async fn edit_journal_(req: actix_web::HttpRequest, data: web::Json<Journal>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(edit_journal(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/accounts/journal/remove")]
+async fn delete_journal_(req: actix_web::HttpRequest, data: web::Json<Journal>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(delete_journal(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[get("/accounts/transaction_type")]
+async fn get_transaction_type(req: actix_web::HttpRequest) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(list_transaction_type());
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/accounts/transaction_type")]
+async fn create_transaction_type_(req: actix_web::HttpRequest, data: web::Json<NewTransactionType>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_transaction_type(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/accounts/transaction_type/edit")]
+async fn edit_transaction_type_(req: actix_web::HttpRequest, data: web::Json<TransactionType>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(edit_transaction_type(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/accounts/transaction_type/remove")]
+async fn remove_transaction_type(req: actix_web::HttpRequest, data: web::Json<TransactionType>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(delete_transaction_type(data.into_inner()));
+        }
+    }
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[get("/ecommerce/pages")]
+async fn get_pages() -> impl Responder {
+    HttpResponse::Ok().json(list_pages())
+}
+
+#[post("/ecommerce/pages")]
+async fn create_page_(req: actix_web::HttpRequest, data: web::Json<NewPage>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_page(data.into_inner()));
+        }
+    }
+
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/ecommerce/pages/edit")]
+async fn edit_page_(req: actix_web::HttpRequest, data: web::Json<Page>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(update_page(data.into_inner()));
+        }
+    }
+
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/ecommerce/pages/remove")]
+async fn remove_page_(req: actix_web::HttpRequest, data: web::Json<Page>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(delete_page(data.into_inner()));
+        }
+    }
+
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[get("/ecommerce/business_detail")]
+async fn get_business_detail() -> impl Responder {
+    HttpResponse::Ok().json(list_business_detail())
+}
+
+#[post("/ecommerce/business_detail")]
+async fn create_business_detail_(req: actix_web::HttpRequest, data: web::Json<NewBusinessDetail>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(create_business_detail(data.into_inner()));
+        }
+    }
+
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/ecommerce/business_detail/edit")]
+async fn edit_business_detail_(req: actix_web::HttpRequest, data: web::Json<BusinessDetail>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(update_business_detail(data.into_inner()));
+        }
+    }
+
+    HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
+}
+
+#[post("/ecommerce/business_detail/remove")]
+async fn remove_business_detail_(req: actix_web::HttpRequest, data: web::Json<BusinessDetail>) -> impl Responder {
+    use crate::ops::encrypt::verify_jwt;
+
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        let token = auth_header.to_str().unwrap().replace("Bearer ", "");
+        if verify_jwt(&token) {
+            return HttpResponse::Ok().json(delete_business_detail(data.into_inner()));
+        }
+    }
+
     HttpResponse::Unauthorized().json(json!({ "error": "Invalid or missing token" }))
 }

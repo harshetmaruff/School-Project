@@ -40,6 +40,20 @@ diesel::table! {
 }
 
 diesel::table! {
+    business_detail (id) {
+        id -> Int4,
+        #[max_length = 100]
+        business_name -> Varchar,
+        #[max_length = 100]
+        pin_code -> Varchar,
+        #[max_length = 100]
+        city -> Varchar,
+        #[max_length = 100]
+        country -> Varchar,
+    }
+}
+
+diesel::table! {
     coa_master (id) {
         id -> Int4,
         #[max_length = 255]
@@ -201,6 +215,16 @@ diesel::table! {
 }
 
 diesel::table! {
+    pages (id) {
+        id -> Int4,
+        #[max_length = 250]
+        page_name -> Varchar,
+        description -> Text,
+        img -> Nullable<Bytea>,
+    }
+}
+
+diesel::table! {
     partner (id) {
         id -> Int4,
         #[max_length = 255]
@@ -229,6 +253,7 @@ diesel::table! {
         product_description -> Nullable<Varchar>,
         sellable -> Nullable<Bool>,
         img -> Nullable<Bytea>,
+        price -> Numeric,
     }
 }
 
@@ -243,7 +268,8 @@ diesel::table! {
 diesel::table! {
     receipt (id) {
         id -> Int4,
-        cashier_id -> Int4,
+        #[max_length = 100]
+        cashier_name -> Nullable<Varchar>,
         customer_id -> Int4,
         receipt_date -> Date,
         receipt_amount -> Nullable<Numeric>,
@@ -273,7 +299,8 @@ diesel::table! {
         id -> Int4,
         shop_id -> Int4,
         session_date -> Nullable<Date>,
-        user_id -> Int4,
+        #[max_length = 100]
+        user_name -> Nullable<Varchar>,
     }
 }
 
@@ -359,10 +386,8 @@ diesel::joinable!(orders_details -> orders (orders_id));
 diesel::joinable!(orders_details -> product (product_id));
 diesel::joinable!(product -> product_category (product_category_id));
 diesel::joinable!(receipt -> partner (customer_id));
-diesel::joinable!(receipt -> users (cashier_id));
 diesel::joinable!(shop -> warehouse (warehouse_id));
 diesel::joinable!(shop_session -> shop (shop_id));
-diesel::joinable!(shop_session -> users (user_id));
 diesel::joinable!(transfer -> product (product_id));
 diesel::joinable!(users -> user_role (user_role_id));
 
@@ -370,6 +395,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     address,
     address_type,
     bank_account,
+    business_detail,
     coa_master,
     currency,
     delivery,
@@ -382,6 +408,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     online_sales,
     orders,
     orders_details,
+    pages,
     partner,
     product,
     product_category,

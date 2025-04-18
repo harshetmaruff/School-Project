@@ -20,9 +20,6 @@ function App() {
   }
 
   const handleSubmit = () => {
-      console.log(Data.username);
-      console.log(Data.password);
-
       getUserToken(navigate, Data.username, Data.password);
   };
 

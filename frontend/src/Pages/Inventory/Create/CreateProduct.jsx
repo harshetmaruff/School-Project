@@ -11,7 +11,7 @@ const CreateProduct = () => {
     { id: 1, name: "Products", logo: Receipts, link: "/inventory/products", selected: true },
     { id: 2, name: "Product Category", logo: Receipts, link: "/inventory/product_category", selected: false },
     { id: 3, name: "Warehouse", logo: Receipts, link: "/inventory/warehouse", selected: false },
-    { id: 4, name: "Delivery", logo: Receipts, link: "/inventory/delivery", selected: false },
+    { id: 4, name: "Transfer", logo: Receipts, link: "/inventory/transfer", selected: false },
   ]
 
   const [formData, setFormData] = useState({
@@ -22,6 +22,7 @@ const CreateProduct = () => {
     product_description: '',
     sellable: false,
     img: null,
+    price: '' // Added price field
   })
 
   const [categories, setCategories] = useState([])
@@ -29,7 +30,6 @@ const CreateProduct = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await getProductCategories(navigate)
-      console.log(response)
       if (Array.isArray(response)) setCategories(response)
     }
     fetchCategories()
@@ -64,6 +64,7 @@ const CreateProduct = () => {
     const productData = {
       ...formData,
       product_category_id: parseInt(formData.product_category_id),
+      price: parseFloat(formData.price),
     }
     await createProduct(productData, navigate)
     navigate('/inventory/products')
@@ -129,6 +130,21 @@ const CreateProduct = () => {
                 </option>
               ))}
             </select>
+          </div>
+
+          {/* Price Input */}
+          <div className="flex flex-row">
+            <p className="m-2 w-48">Price:</p>
+            <input
+              name="price"
+              value={formData.price}
+              onChange={handleInputChange}
+              className="m-2 ring-2 ring-gray-300 flex-1"
+              type="number"
+              step="0.01"
+              min="0"
+              required
+            />
           </div>
 
           <div className="flex flex-row">

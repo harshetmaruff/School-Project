@@ -15,34 +15,6 @@ const Payments = () => {
           selected: false
         },
         {
-          id: 2,
-          name: "Receipt",
-          logo: Receipts,
-          link: "/finance/receipt",
-          selected: false
-        },
-        {
-          id: 3,
-          name: "Payments",
-          logo: Receipts,
-          link: "/finance/payments",
-          selected: true
-        },
-        {
-          id: 4,
-          name: "Credit Note",
-          logo: Receipts,
-          link: "/finance/credit_note",
-          selected: false
-        },
-        {
-          id: 5,
-          name: "Debit Note",
-          logo: Receipts,
-          link: "/finance/debit_note",
-          selected: false
-        },
-        {
           id: 6,
           name: "Ledger",
           logo: Receipts,

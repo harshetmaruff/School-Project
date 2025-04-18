@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router"
-import { getAddress, getCustomer, removeAddress, removePartner } from "../api";
+import { getAddress, getCustomer, getEmployee, removeAddress, removePartner } from "../api";
 import { useEffect, useState } from "react";
 
 const EmployeeTable = () => {
@@ -9,7 +9,7 @@ const EmployeeTable = () => {
     const [VendorData, setVendorData] = useState([]);
 
     const getVendorData = async () => {
-      const data = await getCustomer(navigate);
+      const data = await getEmployee(navigate);
       if(Array.isArray(data)) {
           setVendorData(data)
           console.log(data)

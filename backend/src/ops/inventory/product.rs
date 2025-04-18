@@ -141,7 +141,8 @@ pub fn edit_product(arg: Product) -> serde_json::Value {
             product_category_id.eq(arg.product_category_id),
             product_description.eq(arg.product_description),
             sellable.eq(arg.sellable),
-            img.eq(arg.img)
+            img.eq(arg.img),
+            price.eq(arg.price)
         ))
         .execute(&mut con)
         {

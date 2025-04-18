@@ -40,6 +40,7 @@ pub struct Journal {
     pub voucher_id: String,
     pub ledger_id: i32,
     pub transaction_type_id: i32,
+    pub partner_id: Option<i32>,
     pub transaction_reference: Option<String>,
     pub transaction_date: NaiveDate,
     pub description_text: Option<String>,
@@ -56,6 +57,7 @@ pub struct NewJournal {
     pub voucher_id: String,
     pub ledger_id: i32,
     pub transaction_type_id: i32,
+    pub partner_id: Option<i32>,
     pub transaction_reference: Option<String>,
     pub transaction_date: NaiveDate,
     pub description_text: Option<String>,
@@ -324,7 +326,8 @@ pub struct Product {
     pub product_category_id: i32,
     pub product_description: Option<String>,
     pub sellable: Option<bool>,
-    pub img: Option<Vec<u8>>
+    pub img: Option<Vec<u8>>,
+    pub price: BigDecimal
 }
 
 #[derive(Insertable, Serialize, Deserialize)]
@@ -336,7 +339,8 @@ pub struct NewProduct {
     pub product_category_id: i32,
     pub product_description: Option<String>,
     pub sellable: Option<bool>,
-    pub img: Option<Vec<u8>>
+    pub img: Option<Vec<u8>>,
+    pub price: BigDecimal
 }
 
 // ---- Inventory Stocks ------------------------------------
@@ -507,7 +511,7 @@ pub struct ShopSession {
     pub id: i32,
     pub shop_id: i32,
     pub session_date: Option<NaiveDate>,
-    pub user_id: i32,
+    pub user_name: Option<String>,
 }
 
 #[derive(Insertable, Serialize, Deserialize)]
@@ -515,7 +519,7 @@ pub struct ShopSession {
 pub struct NewShopSession {
     pub shop_id: i32,
     pub session_date: Option<NaiveDate>,
-    pub user_id: i32,
+    pub user_name: Option<String>,
 }
 
 #[derive(Queryable, Selectable, Serialize, Deserialize)]
@@ -523,7 +527,7 @@ pub struct NewShopSession {
 #[diesel(check_for_backend(Pg))]
 pub struct Receipt {
     pub id: i32,
-    pub cashier_id: i32,
+    pub cashier_name: Option<String>,
     pub customer_id: i32,
     pub receipt_date: NaiveDate,
     pub receipt_amount: Option<BigDecimal>,
@@ -532,7 +536,7 @@ pub struct Receipt {
 #[derive(Insertable, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::receipt)]
 pub struct NewReceipt {
-    pub cashier_id: i32,
+    pub cashier_name: Option<String>,
     pub customer_id: i32,
     pub receipt_date: NaiveDate,
     pub receipt_amount: Option<BigDecimal>,
@@ -574,4 +578,55 @@ pub struct NewOnlineSale {
     pub sales_date: Option<NaiveDate>, // Optional to allow default
     pub product_id: i32,
     pub delivered: Option<bool>, // Optional to allow default
+}
+
+#[derive(Queryable, Selectable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::transaction_type)]
+pub struct TransactionType {
+    pub id: i32,
+    pub name: String,
+    pub description: Option<String>,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::transaction_type)]
+pub struct NewTransactionType {
+    pub name: String,
+    pub description: Option<String>,
+}
+
+#[derive(Queryable, Selectable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::pages)]
+pub struct Page {
+    pub id: i32,
+    pub page_name: String,
+    pub description: String,
+    pub img: Option<Vec<u8>>,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::pages)]
+pub struct NewPage {
+    pub page_name: String,
+    pub description: String,
+    pub img: Option<Vec<u8>>,
+}
+
+#[derive(Queryable, Selectable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::business_detail)]
+pub struct BusinessDetail {
+    pub id: i32,
+    pub business_name: String,
+    pub pin_code: String,
+    pub city: String,
+    pub country: String,
+}
+
+#[derive(Insertable, Deserialize, Serialize)]
+#[diesel(table_name = crate::schema::business_detail)]
+pub struct NewBusinessDetail {
+    pub business_name: String,
+    pub pin_code: String,
+    pub city: String,
+    pub country: String,
 }

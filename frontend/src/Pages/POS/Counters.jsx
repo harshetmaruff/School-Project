@@ -12,6 +12,13 @@ const Counters = () => {
             logo: Receipts,
             link: "/pos/counters",
             selected: true
+        },
+        {
+            id: 2,
+            name: "Sessions",
+            logo: Receipts,
+            link: "/pos/shop_session",
+            selected: false
         }
     ]
 

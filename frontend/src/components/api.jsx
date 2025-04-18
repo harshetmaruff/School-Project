@@ -30,6 +30,7 @@ export const getUserToken = async (navigate, uname, pwd) => {
             if (data.token) {
                 console.log("Token:", data.token);
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('username', uname);
                 navigate("/finance/journal")
             }
         } else {
@@ -2464,6 +2465,427 @@ export const removeLedger = async (Data, navigate) => {
         }
     }
     catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const getJournal = async (navigate) => {
+
+    const Method = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/journal", Method);
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/")
+        }
+
+        if (request.ok) {
+            return data
+        }
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const postJournal = async (Data, navigate) => {
+
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/journal", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const editJournal = async (Data, navigate) => {
+
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/journal/edit", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const deleteJournal = async (Data, navigate) => {
+
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/journal/remove", Method)
+
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data
+        }
+    }
+    catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+// Transaction Type
+export const getTransactionType = async (navigate) => {
+    const Method = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/transaction_type", Method);
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data;
+        }
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const postTransactionType = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/transaction_type", Method);
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data;
+        }
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const editTransactionType = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/transaction_type/edit", Method);
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data;
+        }
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const deleteTransactionType = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/accounts/transaction_type/remove", Method);
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized. Incorrect username or password.'}`);
+            navigate("/");
+        }
+
+        if (request.ok) {
+            return data;
+        }
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const postPage = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/ecommerce/pages", Method);
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized'}`);
+            navigate("/");
+        }
+
+        if (request.ok) return data;
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const editPage = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/ecommerce/pages/edit", Method);
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized'}`);
+            navigate("/");
+        }
+
+        if (request.ok) return data;
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const deletePage = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/ecommerce/pages/remove", Method);
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized'}`);
+            navigate("/");
+        }
+
+        if (request.ok) return data;
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const postBusinessDetail = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/ecommerce/business_detail", Method);
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized'}`);
+            navigate("/");
+        }
+
+        if (request.ok) return data;
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const editBusinessDetail = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/ecommerce/business_detail/edit", Method);
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized'}`);
+            navigate("/");
+        }
+
+        if (request.ok) return data;
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const deleteBusinessDetail = async (Data, navigate) => {
+    const Method = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(Data)
+    }
+
+    try {
+        const request = await fetch(apiurl + "/ecommerce/business_detail/remove", Method);
+        const data = await request.json().catch(() => ({}));
+
+        if (request.status === 401) {
+            console.log(`Error 401: ${data.error || 'Unauthorized'}`);
+            navigate("/");
+        }
+
+        if (request.ok) return data;
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const getPages = async () => {
+    try {
+        const request = await fetch(apiurl + "/ecommerce/pages", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await request.json().catch(() => ({}));
+        if (request.ok) return data;
+
+    } catch (error) {
+        console.error("Network error:", error.message);
+    }
+}
+
+export const getBusinessDetail = async () => {
+    try {
+        const request = await fetch(apiurl + "/ecommerce/business_detail", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await request.json().catch(() => ({}));
+        if (request.ok) return data;
+
+    } catch (error) {
         console.error("Network error:", error.message);
     }
 }

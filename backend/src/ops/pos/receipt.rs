@@ -55,7 +55,7 @@ pub fn edit_receipt(arg: Receipt) -> serde_json::Value {
 
     match diesel::update(receipt.filter(id.eq(arg.id)))
         .set((
-            cashier_id.eq(arg.cashier_id),
+            cashier_name.eq(arg.cashier_name),
             customer_id.eq(arg.customer_id),
             receipt_date.eq(arg.receipt_date),
             receipt_amount.eq(arg.receipt_amount),

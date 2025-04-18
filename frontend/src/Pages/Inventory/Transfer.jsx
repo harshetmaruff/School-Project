@@ -1,9 +1,10 @@
 import React from 'react'
 import Receipts from '../../assets/MenuBarOptions/receipt.svg'
 import Sidebar from '../../components/Sidebar'
-import WarehouseTable from '../../components/Inventory/WarehouseTable'
+import TransferTable from '../../components/Inventory/TransferTable'
+import { getPurchaseTransfer } from '../../components/api'
 
-const Warehouse = () => {
+const Transfer = () => {
 
     const Link = [
         {
@@ -25,17 +26,19 @@ const Warehouse = () => {
             name: "Warehouse",
             logo: Receipts,
             link: "/inventory/warehouse",
-            selected: true
+            selected: false
         },
-        { id: 4, name: "Transfer", logo: Receipts, link: "/inventory/transfer", selected: false },
+        { id: 4, name: "Transfer", logo: Receipts, link: "/inventory/transfer", selected: true },
     ]
+
+    
 
     return (
         <div className='flex w-screen'>
             <Sidebar selected='Inventory' option={Link} />
-            <WarehouseTable />
+            <TransferTable />
         </div>
-    ) 
+    )
 }
 
-export default Warehouse
+export default Transfer

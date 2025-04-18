@@ -12,7 +12,8 @@ CREATE TABLE product (
     product_category_id INT NOT NULL,
     product_description VARCHAR(100) DEFAULT NULL,
     sellable BOOLEAN DEFAULT NULL,
-    img BYTEA DEFAULT NULL
+    img BYTEA DEFAULT NULL,
+    price DECIMAL(10, 2) NOT NULL
 );
 
 CREATE TABLE warehouse (

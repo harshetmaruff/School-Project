@@ -27,13 +27,7 @@ const ProductCategory = () => {
             link: "/inventory/warehouse",
             selected: false
         },
-        {
-            id: 4,
-            name: "Delivery",
-            logo: Receipts,
-            link: "/inventory/delivery",
-            selected: false
-        }
+        { id: 4, name: "Transfer", logo: Receipts, link: "/inventory/transfer", selected: false },
     ]
 
     return (

@@ -5,3 +5,4 @@ pub mod bank;
 pub mod coa_master;
 pub mod financial_year;
 pub mod voucher_codes;
+pub mod transaction_type;
