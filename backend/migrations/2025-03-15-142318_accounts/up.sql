@@ -1,4 +1,14 @@
 -- Your SQL goes here
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF ROW(NEW.*) IS DISTINCT FROM ROW(OLD.*) THEN
+        NEW.updated_at = CURRENT_TIMESTAMP;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE TABLE transaction_type (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
@@ -75,19 +85,6 @@ BEFORE UPDATE
 ON address
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
-
-
-
--- Trigger for updated_at value of exchange_rate
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF ROW(NEW.*) IS DISTINCT FROM ROW(OLD.*) THEN
-        NEW.updated_at = CURRENT_TIMESTAMP;
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
 
 CREATE TABLE coa_master (
   id SERIAL PRIMARY KEY,
